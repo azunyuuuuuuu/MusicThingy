@@ -11,25 +11,54 @@ namespace MusicThingy.Models
             optionsBuilder.UseSqlite("Data Source=appdata.db");
         }
 
-        public DbSet<YouTubeSource> Sources { get; set; }
-        public DbSet<YouTubeVideo> Videos { get; set; }
+        protected override void OnModelCreating(ModelBuilder modelBuilder)
+        {
+            modelBuilder.Entity<SourceVideo>()
+                .HasKey(x => new { x.SourceId, x.VideoId });
+
+            modelBuilder.Entity<SourceVideo>()
+                .HasOne(x => x.Source)
+                .WithMany(x => x.SourceVideos)
+                .HasForeignKey(x => x.SourceId);
+
+            modelBuilder.Entity<SourceVideo>()
+                .HasOne(x => x.Video)
+                .WithMany(x => x.SourceVideos)
+                .HasForeignKey(x => x.VideoId);
+        }
+
+        public DbSet<Source> Sources { get; set; }
+        public DbSet<Video> Videos { get; set; }
     }
 
-    public class YouTubeSource
+    public class Source
     {
-        public Guid YouTubeSourceId { get; set; }
+        public Guid SourceId { get; set; }
         public string Title { get; set; }
-        public string Url { get; set; }
+        public string PlaylistId { get; set; }
         public string Author { get; set; }
-        public List<YouTubeVideo> Videos { get; set; } = new List<YouTubeVideo>();
+        public List<SourceVideo> SourceVideos { get; set; } = new List<SourceVideo>();
+        public string Description { get; set; }
     }
 
-    public class YouTubeVideo
+    public class Video
     {
-        public Guid YouTubeVideoId { get; set; }
-        public string VideoId { get; set; }
+        public Guid VideoId { get; set; }
+        public string YouTubeId { get; set; }
         public string Title { get; set; }
         public string Author { get; set; }
         public string Description { get; set; }
+        // public List<string> Keywords { get; set; }
+        public TimeSpan Duration { get; set; }
+        public DateTimeOffset UploadDate { get; set; }
+        public List<SourceVideo> SourceVideos { get; set; } = new List<SourceVideo>();
+    }
+
+    public class SourceVideo
+    {
+        public Guid SourceId { get; set; }
+        public Source Source { get; set; }
+        public Guid VideoId { get; set; }
+        public Video Video { get; set; }
     }
 }

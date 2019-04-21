@@ -10,6 +10,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using MusicThingy.Models;
+using YoutubeExplode;
 
 namespace MusicThingy
 {
@@ -22,6 +23,8 @@ namespace MusicThingy
             services.AddRazorPages();
             services.AddServerSideBlazor();
             services.AddDbContext<AppDbContext>();
+
+            services.AddScoped<YoutubeClient>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

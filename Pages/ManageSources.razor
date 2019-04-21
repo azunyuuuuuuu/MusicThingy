@@ -17,8 +17,8 @@
             <tr>
                 <td>@source.Title</td>
                 <td>@source.Author</td>
-                <td>@source.Url</td>
-                <td><button class="ui button red" onclick="@(e=>RemoveSource(source.YouTubeSourceId))">Remove</button></td>
+                <td>@source.PlaylistId</td>
+                <td><button class="ui button red" onclick="@(e=>RemoveSource(source.SourceId))">Remove</button></td>
             </tr>
         }
     </tbody>
