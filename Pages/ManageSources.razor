@@ -1,0 +1,33 @@
+@page "/sources"
+@inherits ManageSourcesBase
+
+<h1>Sources</h1>
+
+<table class="ui celled table">
+    <thead>
+        <tr>
+            <th>Name</th>
+            <th>Author</th>
+            <th>Url</th>
+            <th>Actions</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var source in Sources){
+            <tr>
+                <td>@source.Title</td>
+                <td>@source.Author</td>
+                <td>@source.Url</td>
+                <td><button class="ui button red" onclick="@(e=>RemoveSource(source.YouTubeSourceId))">Remove</button></td>
+            </tr>
+        }
+    </tbody>
+</table>
+
+<form class="ui form">
+    <div class="field">
+        <label>Url</label>
+        <input type="text" bind=@NewSourceUrl placeholder="Url"/>
+    </div>
+    <button class="ui button" onclick="@AddSource">Submit</button>
+</form>
