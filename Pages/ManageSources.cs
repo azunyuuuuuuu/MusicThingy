@@ -11,7 +11,7 @@ namespace MusicThingy.Pages
 {
     public class ManageSourcesBase : ComponentBase
     {
-        [Inject] protected AppDbContext _context { get; set; }
+        [Inject] protected DataRepository _repository { get; set; }
         [Inject] protected YoutubeClient _ytclient { get; set; }
 
         public List<Source> Sources { get; private set; } = new List<Source>();
@@ -25,7 +25,7 @@ namespace MusicThingy.Pages
         private async Task RebuildList()
         {
             Sources.Clear();
-            Sources.AddRange(await _context.Sources.AsNoTracking().ToListAsync());
+            Sources.AddRange(await _repository.GetAllSources());
         }
 
         public async Task AddSource()
@@ -39,6 +39,7 @@ namespace MusicThingy.Pages
 
             var item = new Source
             {
+                SourceId = Guid.NewGuid(),
                 PlaylistId = playlistid,
                 Title = playlist.Title,
                 Author = playlist.Author,
@@ -47,16 +48,14 @@ namespace MusicThingy.Pages
 
             NewSourceUrl = string.Empty;
 
-            await _context.Sources.AddAsync(item);
-            await _context.SaveChangesAsync();
+            await _repository.AddSource(item);
             await RebuildList();
             StateHasChanged();
         }
 
-        public async Task RemoveSource(Guid id)
+        public async Task RemoveSource(Source source)
         {
-            _context.Sources.Remove(Sources.Single(x => x.SourceId == id));
-            await _context.SaveChangesAsync();
+            await _repository.RemoveSource(source);
             await RebuildList();
         }
     }

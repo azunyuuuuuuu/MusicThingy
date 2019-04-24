@@ -3,12 +3,12 @@
 
 <h1>Sources</h1>
 
-<table class="ui celled table">
+<table class="ui selectable table">
     <thead>
         <tr>
             <th>Name</th>
             <th>Author</th>
-            <th>Url</th>
+            <th>Playlist ID</th>
             <th>Actions</th>
         </tr>
     </thead>
@@ -18,16 +18,13 @@
                 <td>@source.Title</td>
                 <td>@source.Author</td>
                 <td>@source.PlaylistId</td>
-                <td><button class="ui button red" onclick="@(e=>RemoveSource(source.SourceId))">Remove</button></td>
+                <td class="collapsing"><button class="ui button red" onclick="@(e=>RemoveSource(source))">Remove</button></td>
             </tr>
         }
     </tbody>
 </table>
 
-<form class="ui form">
-    <div class="field">
-        <label>Url</label>
-        <input type="text" bind=@NewSourceUrl placeholder="Url"/>
-    </div>
-    <button class="ui button" onclick="@AddSource">Submit</button>
-</form>
+<div class="ui fluid action input">
+  <input type="text" bind=@NewSourceUrl placeholder="Url..." />
+  <div class="ui button" onclick="@AddSource">Add</div>
+</div>
