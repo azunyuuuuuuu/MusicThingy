@@ -22,7 +22,9 @@ namespace MusicThingy
         {
             services.AddRazorPages();
             services.AddServerSideBlazor();
+
             services.AddDbContext<AppDbContext>();
+            services.AddScoped<DataRepository>();
 
             services.AddScoped<YoutubeClient>();
         }
