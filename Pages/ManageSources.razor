@@ -1,5 +1,6 @@
 @page "/sources"
 @inherits ManageSourcesBase
+@using System.Linq
 
 <h1>Sources</h1>
 
@@ -13,7 +14,7 @@
         </tr>
     </thead>
     <tbody>
-        @foreach (var source in Sources){
+        @foreach (var source in Sources.OrderBy(x => x.Title)){
             <tr>
                 <td>@source.Title</td>
                 <td>@source.Author</td>
