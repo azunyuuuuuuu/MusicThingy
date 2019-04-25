@@ -1,11 +1,24 @@
 ﻿@inherits LayoutComponentBase
 
-<div class="ui attached stackable borderless menu">
-    <div class="ui container">
-        <NavMenu />
-    </div>
+<div id="app-body" class="ui main container">
+    @Body
 </div>
 
-<div class="ui main container">
-    @Body
+<div id="app-footer" class="ui attached borderless menu">
+    <div id="controls" class="ui icon buttons">
+        <div class="ui button"><i class="backward icon"></i></div>
+        <div class="ui button"><i class="play icon"></i></div>
+        <div class="ui button"><i class="pause icon"></i></div>
+        <div class="ui button"><i class="forward icon"></i></div>
+    </div>
+
+    <div id="info" class="ui segment">
+
+    </div>
+
+    <div id="view" class="ui icon buttons">
+        <NavLink class="ui button" href="" Match="NavLinkMatch.All"><i class="list icon"></i></NavLink>
+        <div class="ui button"><i class="download icon"></i></div>
+        <NavLink class="ui button" href="sources" Match="NavLinkMatch.All"><i class="cog icon"></i></NavLink>
+    </div>
 </div>
