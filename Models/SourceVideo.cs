@@ -4,9 +4,9 @@ namespace MusicThingy.Models
 {
     public class SourceVideo
     {
-        public Guid SourceId { get; set; }
+        public string SourceId { get; set; }
         public Source Source { get; set; }
-        public Guid VideoId { get; set; }
+        public string VideoId { get; set; }
         public Video Video { get; set; }
     }
 }

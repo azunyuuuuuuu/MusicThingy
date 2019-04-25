@@ -5,7 +5,7 @@ namespace MusicThingy.Models
 {
     public class Source
     {
-        public Guid SourceId { get; set; }
+        public string Id { get; set; }
         public string Title { get; set; }
         public string PlaylistId { get; set; }
         public string Author { get; set; }

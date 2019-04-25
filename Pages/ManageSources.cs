@@ -39,7 +39,7 @@ namespace MusicThingy.Pages
 
             var item = new Source
             {
-                SourceId = Guid.NewGuid(),
+                Id = $"YTPl#{playlistid}",
                 PlaylistId = playlistid,
                 Title = playlist.Title,
                 Author = playlist.Author,

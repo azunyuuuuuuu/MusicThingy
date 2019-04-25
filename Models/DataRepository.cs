@@ -22,16 +22,16 @@ namespace MusicThingy.Models
                 .AsNoTracking()
                 .ToListAsync();
 
-        public async Task<Source> GetSource(Guid id)
+        public async Task<Source> GetSource(string id)
             => await _context.Sources
                 .AsNoTracking()
-                .SingleAsync(x => x.SourceId == id);
+                .SingleAsync(x => x.Id == id);
 
-        public async Task<Source> GetSourceWithVideos(Guid id)
+        public async Task<Source> GetSourceWithVideos(string id)
             => await _context.Sources
                 .AsNoTracking()
                 .Include(x => x.SourceVideos)
-                .SingleAsync(x => x.SourceId == id);
+                .SingleAsync(x => x.Id == id);
 
         public async Task AddSource(Source source)
         {
@@ -46,6 +46,21 @@ namespace MusicThingy.Models
             _context.Sources
                .Remove(source);
             await SaveChanges();
+        }
+
+        public async Task<bool> ContainsVideo(Video video)
+        {
+            return await _context.Videos
+                .AsNoTracking()
+                .ContainsAsync(video);
+        }
+
+        public async Task AddVideo(Video video)
+        {
+            await _context.Videos
+                .AddAsync(video);
+            await SaveChanges();
+            _context.Entry(video).State = EntityState.Detached;
         }
     }
 }
