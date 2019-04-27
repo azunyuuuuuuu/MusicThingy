@@ -34,32 +34,38 @@ namespace MusicThingy.Services
             while (!stoppingToken.IsCancellationRequested)
             {
                 _logger.LogInformation("Updating YouTube Sources");
-                
-                using (var scope = _services.CreateScope())
+
+                try
                 {
-                    var _repository = scope.ServiceProvider.GetRequiredService<DataRepository>();
-                    var _client = scope.ServiceProvider.GetRequiredService<YoutubeClient>();
-
-                    foreach (var source in await _repository.GetAllSources())
+                    using (var scope = _services.CreateScope())
                     {
-                        _logger.LogInformation($"Getting playlist {source.Title}");
-                        var playlist = await _client.GetPlaylistAsync(source.PlaylistId);
-                        var videos = playlist.Videos.Select(x => new Video
+                        var _repository = scope.ServiceProvider.GetRequiredService<DataRepository>();
+                        var _client = scope.ServiceProvider.GetRequiredService<YoutubeClient>();
+
+                        foreach (var source in await _repository.GetAllSources())
                         {
-                            Id = $"YT#{x.Id}",
-                            YouTubeId = x.Id,
-                            Title = x.Title,
-                            Author = x.Author,
-                            Description = x.Description,
-                            Duration = x.Duration,
-                            UploadDate = x.UploadDate
-                        });
+                            _logger.LogInformation($"Getting playlist {source.Title}");
+                            var playlist = await _client.GetPlaylistAsync(source.PlaylistId);
+                            var videos = playlist.Videos.Select(x => new Video
+                            {
+                                Id = $"YT#{x.Id}",
+                                YouTubeId = x.Id,
+                                Title = x.Title,
+                                Author = x.Author,
+                                Description = x.Description,
+                                Duration = x.Duration,
+                                UploadDate = x.UploadDate
+                            });
 
-                        foreach (var video in videos)
-                            if (!await _repository.ContainsVideo(video))
-                                await _repository.AddVideo(video);
-
+                            foreach (var video in videos)
+                                if (!await _repository.ContainsVideo(video))
+                                    await _repository.AddVideo(video);
+                        }
                     }
+                }
+                catch (Exception ex)
+                {
+                    _logger.LogError(ex, "An error occurred while updating sources");
                 }
 
                 await Task.Delay(TimeSpan.FromMinutes(1), stoppingToken);

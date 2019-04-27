@@ -1,29 +1,38 @@
-@page "/sources"
+@page "/settings/sources"
 @inherits ManageSourcesBase
 @using System.Linq
 
-<table class="ui selectable table">
-    <thead>
-        <tr>
-            <th>Name</th>
-            <th>Author</th>
-            <th>Playlist ID</th>
-            <th>Actions</th>
-        </tr>
-    </thead>
-    <tbody>
-        @foreach (var source in Sources.OrderBy(x => x.Title)){
-            <tr>
-                <td>@source.Title</td>
-                <td>@source.Author</td>
-                <td>@source.PlaylistId</td>
-                <td class="collapsing"><button class="ui button red" onclick="@(e=>RemoveSource(source))">Remove</button></td>
-            </tr>
-        }
-    </tbody>
-</table>
 
-<div class="ui fluid action input">
-  <input type="text" bind=@NewSourceUrl placeholder="Url..." />
-  <div class="ui button" onclick="@AddSource">Add</div>
+<div class="ui container">
+    <div class="ui top attached tabular menu">
+        <NavLink href="settings/general" class="item" Match="NavLinkMatch.All">General</NavLink>
+        <NavLink href="settings/sources" class="item" Match="NavLinkMatch.All">Sources</NavLink>
+    </div>
+    <div class="ui bottom attached active tab segment">
+        <table class="ui selectable table">
+            <thead>
+                <tr>
+                    <th>Name</th>
+                    <th>Author</th>
+                    <th>Playlist ID</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var source in Sources.OrderBy(x => x.Title)){
+                    <tr>
+                        <td>@source.Title</td>
+                        <td>@source.Author</td>
+                        <td>@source.PlaylistId</td>
+                        <td class="collapsing"><button class="ui button red" onclick="@(e=>RemoveSource(source))">Remove</button></td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+
+        <div class="ui fluid action input">
+        <input type="text" bind=@NewSourceUrl placeholder="Url..." />
+        <div class="ui button" onclick="@AddSource">Add</div>
+        </div>
+    </div>
 </div>
