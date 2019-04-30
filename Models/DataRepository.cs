@@ -27,6 +27,11 @@ namespace MusicThingy.Models
                 .AsNoTracking()
                 .SingleAsync(x => x.Id == id);
 
+        internal async Task<List<Video>> GetAllVideos()
+        {
+            return await _context.Videos.ToListAsync();
+        }
+
         public async Task<Source> GetSourceWithVideos(string id)
             => await _context.Sources
                 .AsNoTracking()

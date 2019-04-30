@@ -41,5 +41,27 @@
 
         </div>
     </div>
+
+    <table id="content" class="ui selectable table">
+        <thead>
+            <tr>
+                <th>Name</th>
+                <th>Length</th>
+                <th>Artist</th>
+                <th>Album</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach(var item in Videos)
+            {
+                <tr>
+                    <td>@item.Title</td>
+                    <td>@item.Duration</td>
+                    <td>@item.Author</td>
+                    <td class="disabled">none</td>
+                </tr>
+            }
+        </tbody>
+    </table>
     
 </div>

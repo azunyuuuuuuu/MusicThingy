@@ -59,3 +59,8 @@ app #app-body #index {
     background-color: rgb(231, 231, 231);
     overflow-x: hidden;
 }
+
+#index #content {
+    grid-area: content;
+    overflow-x: hidden;
+}
