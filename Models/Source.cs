@@ -9,7 +9,8 @@ namespace MusicThingy.Models
         public string Title { get; set; }
         public string PlaylistId { get; set; }
         public string Author { get; set; }
-        public List<SourceVideo> SourceVideos { get; set; } = new List<SourceVideo>();
         public string Description { get; set; }
+        
+        public ICollection<SourceVideo> SourceVideos { get; set; } = new List<SourceVideo>();
     }
 }

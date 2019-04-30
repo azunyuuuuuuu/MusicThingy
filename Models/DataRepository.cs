@@ -31,6 +31,7 @@ namespace MusicThingy.Models
             => await _context.Sources
                 .AsNoTracking()
                 .Include(x => x.SourceVideos)
+                .ThenInclude(x => x.Video)
                 .SingleAsync(x => x.Id == id);
 
         public async Task AddSource(Source source)
@@ -61,6 +62,22 @@ namespace MusicThingy.Models
                 .AddAsync(video);
             await SaveChanges();
             _context.Entry(video).State = EntityState.Detached;
+        }
+
+        public async Task AddSourceVideo(SourceVideo sourcevideo)
+        {
+            await _context.Set<SourceVideo>()
+                .AddAsync(sourcevideo);
+            await SaveChanges();
+            _context.Entry(sourcevideo).State = EntityState.Detached;
+        }
+
+        public async Task<bool> ContainsSourceVideo(SourceVideo sourcevideo)
+        {
+            return null != await _context.Set<SourceVideo>()
+                .FirstOrDefaultAsync(x =>
+                    x.SourceId == sourcevideo.SourceId &&
+                    x.VideoId == sourcevideo.VideoId);
         }
     }
 }

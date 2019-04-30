@@ -13,6 +13,7 @@ namespace MusicThingy.Models
         // public List<string> Keywords { get; set; }
         public TimeSpan Duration { get; set; }
         public DateTimeOffset UploadDate { get; set; }
-        public List<SourceVideo> SourceVideos { get; set; } = new List<SourceVideo>();
+        
+        public ICollection<SourceVideo> SourceVideos { get; set; } = new List<SourceVideo>();
     }
 }

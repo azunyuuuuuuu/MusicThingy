@@ -60,6 +60,10 @@ namespace MusicThingy.Services
                             foreach (var video in videos)
                                 if (!await _repository.ContainsVideo(video))
                                     await _repository.AddVideo(video);
+
+                            foreach (var item in videos.Select(video => new SourceVideo { SourceId = source.Id, VideoId = video.Id }))
+                                if (!await _repository.ContainsSourceVideo(item))
+                                    await _repository.AddSourceVideo(item);
                         }
                     }
                 }

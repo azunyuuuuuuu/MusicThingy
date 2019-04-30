@@ -13,16 +13,6 @@ namespace MusicThingy.Models
         {
             modelBuilder.Entity<SourceVideo>()
                 .HasKey(x => new { x.SourceId, x.VideoId });
-
-            modelBuilder.Entity<SourceVideo>()
-                .HasOne(x => x.Source)
-                .WithMany(x => x.SourceVideos)
-                .HasForeignKey(x => x.SourceId);
-
-            modelBuilder.Entity<SourceVideo>()
-                .HasOne(x => x.Video)
-                .WithMany(x => x.SourceVideos)
-                .HasForeignKey(x => x.VideoId);
         }
 
         public DbSet<Source> Sources { get; set; }
