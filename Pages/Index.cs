@@ -17,7 +17,7 @@ namespace MusicThingy.Pages
 
         protected override async Task OnInitAsync()
         {
-            Videos.AddRange((await _repository.GetAllVideos())
+            Videos.AddRange((await _repository.GetAllMedia())
                 .OrderBy(x => x.Name));
         }
     }

@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
 
@@ -27,12 +28,18 @@ namespace MusicThingy.Models
                 .AsNoTracking()
                 .SingleAsync(x => x.Id == id);
 
-        internal async Task<List<Media>> GetAllVideos()
+        internal async Task<List<Media>> GetAllMedia()
         {
             return await _context.Media.ToListAsync();
         }
 
-        public async Task<Source> GetSourceWithVideos(string id)
+        public IEnumerable<Media> GetAllMediaWriteable(Func<Media, bool> predicate)
+        {
+            return _context.Media
+                .Where(predicate);
+        }
+
+        public async Task<Source> GetSourceWithMedia(string id)
             => await _context.Sources
                 .AsNoTracking()
                 .Include(x => x.SourceMedias)

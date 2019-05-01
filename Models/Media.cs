@@ -11,6 +11,10 @@ namespace MusicThingy.Models
         public string Artist { get; set; }
         public string Album { get; set; }
 
+        public bool IsActive { get; set; } = true;
+        public bool IsDownloaded { get; set; } = false;
+        public string FilePath { get; set; } = string.Empty;
+
         public ICollection<SourceMedia> SourceMedias { get; set; } = new List<SourceMedia>();
     }
 

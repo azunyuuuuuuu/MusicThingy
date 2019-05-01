@@ -9,7 +9,7 @@
   <ItemGroup>
     <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="2.2.4" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.Sqlite" Version="2.2.4" />
-    <PackageReference Include="YoutubeExplode" Version="4.6.8" />
+    <PackageReference Include="YoutubeExplode" Version="4.7.0-beta" />
   </ItemGroup>
 
 </Project>
