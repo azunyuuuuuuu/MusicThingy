@@ -27,16 +27,16 @@ namespace MusicThingy.Models
                 .AsNoTracking()
                 .SingleAsync(x => x.Id == id);
 
-        internal async Task<List<Video>> GetAllVideos()
+        internal async Task<List<Media>> GetAllVideos()
         {
-            return await _context.Videos.ToListAsync();
+            return await _context.Media.ToListAsync();
         }
 
         public async Task<Source> GetSourceWithVideos(string id)
             => await _context.Sources
                 .AsNoTracking()
-                .Include(x => x.SourceVideos)
-                .ThenInclude(x => x.Video)
+                .Include(x => x.SourceMedias)
+                .ThenInclude(x => x.Media)
                 .SingleAsync(x => x.Id == id);
 
         public async Task AddSource(Source source)
@@ -54,35 +54,35 @@ namespace MusicThingy.Models
             await SaveChanges();
         }
 
-        public async Task<bool> ContainsVideo(Video video)
+        public async Task<bool> ContainsMedia(Media video)
         {
-            return await _context.Videos
+            return await _context.Media
                 .AsNoTracking()
                 .ContainsAsync(video);
         }
 
-        public async Task AddVideo(Video video)
+        public async Task AddMedia(Media video)
         {
-            await _context.Videos
+            await _context.Media
                 .AddAsync(video);
             await SaveChanges();
             _context.Entry(video).State = EntityState.Detached;
         }
 
-        public async Task AddSourceVideo(SourceVideo sourcevideo)
+        public async Task AddSourceMedia(SourceMedia sourcemedia)
         {
-            await _context.Set<SourceVideo>()
-                .AddAsync(sourcevideo);
+            await _context.Set<SourceMedia>()
+                .AddAsync(sourcemedia);
             await SaveChanges();
-            _context.Entry(sourcevideo).State = EntityState.Detached;
+            _context.Entry(sourcemedia).State = EntityState.Detached;
         }
 
-        public async Task<bool> ContainsSourceVideo(SourceVideo sourcevideo)
+        public async Task<bool> ContainsSourceMedia(SourceMedia sourcemedia)
         {
-            return null != await _context.Set<SourceVideo>()
+            return null != await _context.Set<SourceMedia>()
                 .FirstOrDefaultAsync(x =>
-                    x.SourceId == sourcevideo.SourceId &&
-                    x.VideoId == sourcevideo.VideoId);
+                    x.SourceId == sourcemedia.SourceId &&
+                    x.MediaId == sourcemedia.MediaId);
         }
     }
 }

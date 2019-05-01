@@ -1,11 +1,21 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
 
 namespace MusicThingy.Models
 {
-    public class Video
+    public abstract class Media
     {
         public string Id { get; set; }
+        public string Name { get; set; }
+        public TimeSpan Time { get; set; }
+        public string Artist { get; set; }
+        public string Album { get; set; }
+
+        public ICollection<SourceMedia> SourceMedias { get; set; } = new List<SourceMedia>();
+    }
+
+    public class YouTubeSourceMedia : Media
+    {
         public string YouTubeId { get; set; }
         public string Title { get; set; }
         public string Author { get; set; }
@@ -13,7 +23,5 @@ namespace MusicThingy.Models
         // public List<string> Keywords { get; set; }
         public TimeSpan Duration { get; set; }
         public DateTimeOffset UploadDate { get; set; }
-        
-        public ICollection<SourceVideo> SourceVideos { get; set; } = new List<SourceVideo>();
     }
 }

@@ -46,7 +46,7 @@ namespace MusicThingy.Services
                         {
                             _logger.LogInformation($"Getting playlist {source.Title}");
                             var playlist = await _client.GetPlaylistAsync(source.PlaylistId);
-                            var videos = playlist.Videos.Select(x => new Video
+                            var videos = playlist.Videos.Select(x => new YouTubeSourceMedia
                             {
                                 Id = $"YT#{x.Id}",
                                 YouTubeId = x.Id,
@@ -58,12 +58,12 @@ namespace MusicThingy.Services
                             });
 
                             foreach (var video in videos)
-                                if (!await _repository.ContainsVideo(video))
-                                    await _repository.AddVideo(video);
+                                if (!await _repository.ContainsMedia(video))
+                                    await _repository.AddMedia(video);
 
-                            foreach (var item in videos.Select(video => new SourceVideo { SourceId = source.Id, VideoId = video.Id }))
-                                if (!await _repository.ContainsSourceVideo(item))
-                                    await _repository.AddSourceVideo(item);
+                            foreach (var item in videos.Select(video => new SourceMedia { SourceId = source.Id, MediaId = video.Id }))
+                                if (!await _repository.ContainsSourceMedia(item))
+                                    await _repository.AddSourceMedia(item);
                         }
                     }
                 }

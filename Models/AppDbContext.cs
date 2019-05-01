@@ -11,11 +11,13 @@ namespace MusicThingy.Models
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-            modelBuilder.Entity<SourceVideo>()
-                .HasKey(x => new { x.SourceId, x.VideoId });
+            modelBuilder.Entity<YouTubeSourceMedia>();
+
+            modelBuilder.Entity<SourceMedia>()
+                .HasKey(x => new { x.SourceId, x.MediaId });
         }
 
         public DbSet<Source> Sources { get; set; }
-        public DbSet<Video> Videos { get; set; }
+        public DbSet<Media> Media { get; set; }
     }
 }
