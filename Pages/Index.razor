@@ -3,26 +3,24 @@
 
 <PlaylistNavigation></PlaylistNavigation>
 
-<section>
-    <table class="ui selectable table">
-        <thead>
-            <tr>
-                <th>Name</th>
-                <th>Length</th>
-                <th>Artist</th>
-                <th>Album</th>
-            </tr>
-        </thead>
-        <tbody>
-            @foreach(var item in Videos)
-            {
-                <tr>
-                    <td>@item.Name</td>
-                    <td>@item.Time</td>
-                    <td>@item.Artist</td>
-                    <td class="disabled">@item.Album</td>
-                </tr>
-            }
-        </tbody>
-    </table>
+<section class="tablescroll">
+    <div class="table header">
+        <div></div>
+        <div>Name</div>
+        <div>Time</div>
+        <div>Artist</div>
+        <div>Album</div>
+    </div>
+    <div class="table body">
+        @foreach(var item in Videos)
+        {
+            <div class="item" draggable="true">
+                <div>✅</div>
+                <div>@item.Name</div>
+                <div>@item.Time</div>
+                <div>@item.Artist</div>
+                <div>@item.Album</div>
+            </div>
+        }
+    </div>
 </section>
