@@ -13,14 +13,10 @@ namespace MusicThingy.Pages
     {
         [Inject] protected DataRepository _repository { get; set; }
 
-        public List<Source> Sources { get; set; } = new List<Source>();
         public List<Video> Videos { get; set; } = new List<Video>();
 
         protected override async Task OnInitAsync()
         {
-            Sources.AddRange((await _repository.GetAllSources())
-                .OrderBy(x => x.Title));
-
             Videos.AddRange((await _repository.GetAllVideos())
                 .OrderBy(x => x.Title));
         }

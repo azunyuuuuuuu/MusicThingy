@@ -1,0 +1,54 @@
+@using MusicThingy.Models
+
+@inject DataRepository _repository
+
+<nav class="ui fluid container">
+    <div class="ui vertical secondary menu">
+
+        <div class="item">
+            <div class="header">Library</div>
+            <div class="menu">
+                <a href="" class="active item">All Music</a>
+                <a href="" class="item">Downloaded</a>
+            </div>
+        </div>
+
+        <div class="item">
+            <div class="header">Sources</div>
+            <div class="menu">
+                @foreach (var source in Sources)
+                {
+                    <a href="" class="item"><i class="rss icon"></i>@source.Title</a>
+                }
+            </div>      
+        </div>
+
+        <div class="item">
+            <div class="header">Devices</div>
+            <div class="menu">
+                <a href="" class="item">Phone</a>
+            </div>
+        </div>
+
+
+        <div class="item">
+            <div class="header">Playlists</div>
+            <div class="menu">
+                <a href="" class="item">Playlist 50</a>
+            </div>
+        </div>
+
+    </div>
+</nav>
+
+@functions
+{
+    List<Source> Sources { get; set; } = new List<Source>();
+    List<Video> Videos { get; set; } = new List<Video>();
+
+    protected override async Task OnInitAsync()
+    {
+        Sources.AddRange((await _repository.GetAllSources())
+            .OrderBy(x => x.Title));
+    }
+}
