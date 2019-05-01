@@ -1,10 +1,8 @@
 ﻿@inherits LayoutComponentBase
 
-<div id="app-body">
-    @Body
-</div>
+@Body
 
-<div id="app-footer" class="ui attached borderless menu">
+<footer>
     <div id="controls" class="ui icon buttons">
         <div class="ui disabled button"><i class="backward icon"></i></div>
         <div class="ui disabled button"><i class="play icon"></i></div>
@@ -13,7 +11,7 @@
     </div>
 
     <div id="info" class="ui segment">
-
+        <p>yes</p>
     </div>
 
     <div id="view" class="ui icon buttons">
@@ -21,4 +19,4 @@
         <div class="ui disabled button"><i class="download icon"></i></div>
         <NavLink class="ui button" href="settings" Match="NavLinkMatch.All"><i class="cog icon"></i></NavLink>
     </div>
-</div>
+</footer>

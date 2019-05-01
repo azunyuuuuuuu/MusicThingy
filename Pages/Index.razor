@@ -1,48 +1,47 @@
 ﻿@page "/"
 @inherits IndexBase
 
-<div id="index">
+<nav class="ui fluid container">
+    <div class="ui vertical secondary menu">
 
-    <div id="sidebar" class="ui fluid container">
-        <div class="ui vertical secondary menu">
-
-            <div class="item">
-                <div class="header">Library</div>
-                <div class="menu">
-                    <a href="" class="active item">All Music</a>
-                    <a href="" class="item">Downloaded</a>
-                </div>
+        <div class="item">
+            <div class="header">Library</div>
+            <div class="menu">
+                <a href="" class="active item">All Music</a>
+                <a href="" class="item">Downloaded</a>
             </div>
-
-            <div class="item">
-                <div class="header">Sources</div>
-                <div class="menu">
-                    @foreach (var source in Sources)
-                    {
-                        <a href="" class="item"><i class="rss icon"></i>@source.Title</a>
-                    }
-                </div>      
-            </div>
-
-            <div class="item">
-                <div class="header">Devices</div>
-                <div class="menu">
-                    <a href="" class="item">Phone</a>
-                </div>
-            </div>
-
-
-            <div class="item">
-                <div class="header">Playlists</div>
-                <div class="menu">
-                    <a href="" class="item">Playlist 50</a>
-                </div>
-            </div>
-
         </div>
-    </div>
 
-    <table id="content" class="ui selectable table">
+        <div class="item">
+            <div class="header">Sources</div>
+            <div class="menu">
+                @foreach (var source in Sources)
+                {
+                    <a href="" class="item"><i class="rss icon"></i>@source.Title</a>
+                }
+            </div>      
+        </div>
+
+        <div class="item">
+            <div class="header">Devices</div>
+            <div class="menu">
+                <a href="" class="item">Phone</a>
+            </div>
+        </div>
+
+
+        <div class="item">
+            <div class="header">Playlists</div>
+            <div class="menu">
+                <a href="" class="item">Playlist 50</a>
+            </div>
+        </div>
+
+    </div>
+</nav>
+
+<section>
+    <table class="ui selectable table">
         <thead>
             <tr>
                 <th>Name</th>
@@ -63,5 +62,4 @@
             }
         </tbody>
     </table>
-    
-</div>
+</section>
