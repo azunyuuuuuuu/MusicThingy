@@ -52,10 +52,10 @@ namespace MusicThingy.Services
 
                             if (audioinfo == null)
                             {
-                                _logger.LogInformation($"Video {media.Title} has no suitable music :(");
+                                _logger.LogInformation($"Video {media.YouTubeTitle} has no suitable music :(");
                                 continue;
                             }
-                            media.FilePath = Path.Combine(media.Author.GetSafeFilename(), $"[{media.YouTubeId}] {media.Title.GetSafeFilename()}.m4a");
+                            media.FilePath = Path.Combine(media.YouTubeUploader.GetSafeFilename(), $"[{media.YouTubeId}] {media.YouTubeTitle.GetSafeFilename()}.m4a");
 
                             _logger.LogInformation($"Downloading file {media.FilePath}");
                             Directory.CreateDirectory(Path.GetDirectoryName(Path.Combine("data", media.FilePath)));

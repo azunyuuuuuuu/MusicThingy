@@ -15,17 +15,17 @@ namespace MusicThingy.Models
         public bool IsDownloaded { get; set; } = false;
         public string FilePath { get; set; } = string.Empty;
 
-        public ICollection<SourceMedia> SourceMedias { get; set; } = new List<SourceMedia>();
+        public ICollection<SourceMedia> SourceMedia { get; set; } = new List<SourceMedia>();
     }
 
     public class YouTubeSourceMedia : Media
     {
         public string YouTubeId { get; set; }
-        public string Title { get; set; }
-        public string Author { get; set; }
-        public string Description { get; set; }
+        public string YouTubeTitle { get; set; }
+        public string YouTubeUploader { get; set; }
+        public string YouTubeDescription { get; set; }
         // public List<string> Keywords { get; set; }
-        public TimeSpan Duration { get; set; }
-        public DateTimeOffset UploadDate { get; set; }
+        public TimeSpan YouTubeDuration { get; set; }
+        public DateTimeOffset YouTubeUploadDate { get; set; }
     }
 }
