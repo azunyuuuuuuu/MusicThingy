@@ -17,6 +17,8 @@ namespace MusicThingy.Pages
         public List<Source> Sources { get; private set; } = new List<Source>();
         public string NewSourceUrl { get; set; } = string.Empty;
 
+        public bool IsAdd { get; set; } = false;
+
         protected override async Task OnInitAsync()
         {
             await RebuildList();
@@ -50,6 +52,9 @@ namespace MusicThingy.Pages
 
             await _repository.AddSource(item);
             await RebuildList();
+
+            IsAdd = false;
+
             StateHasChanged();
         }
 
@@ -57,6 +62,18 @@ namespace MusicThingy.Pages
         {
             await _repository.RemoveSource(source);
             await RebuildList();
+        }
+
+        public void OpenModal()
+        {
+            NewSourceUrl = string.Empty;
+            IsAdd = true;
+        }
+
+        public void CloseModal()
+        {
+            NewSourceUrl = string.Empty;
+            IsAdd = false;
         }
     }
 }

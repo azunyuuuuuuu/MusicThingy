@@ -30,9 +30,34 @@
             </tbody>
         </table>
 
-        <div class="ui fluid action input">
-        <input type="text" bind=@NewSourceUrl placeholder="Url..." />
-        <div class="ui button" onclick="@AddSource">Add</div>
-        </div>
+        <div class="ui button" onclick=@OpenModal>Add new source...</div>
+
+        @if (IsAdd)
+        {
+            <div class="ui active page dimmer">
+
+                <div class="ui active small basic modal">
+                    <div class="ui header">
+                        Add new URL
+                    </div>
+                    <div class="content">
+                        <div class="ui fluid action input">
+                            <input type="text" bind=@NewSourceUrl placeholder="Url..." />
+                        </div>
+                    </div>
+                    <div class="actions">
+                        <div class="ui red cancel inverted button" onclick="@CloseModal">
+                            <i class="remove icon"></i>
+                            Cancel
+                        </div>
+                        <div class="ui green ok inverted button" onclick="@AddSource">
+                            <i class="checkmark icon"></i>
+                            Add
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        }
     </div>
 </section>
