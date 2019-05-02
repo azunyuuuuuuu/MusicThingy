@@ -9,5 +9,10 @@ namespace MusicThingy
         {
             return string.Join("_", filename.Split(Path.GetInvalidFileNameChars()));
         }
+        
+        public static string GetSafePath(this string filename)
+        {
+            return string.Join("_", filename.Split(Path.GetInvalidPathChars()));
+        }
     }
 }

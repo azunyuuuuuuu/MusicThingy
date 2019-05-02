@@ -3,6 +3,7 @@ using System.IO;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
@@ -16,11 +17,13 @@ namespace MusicThingy.Services
     {
         private readonly ILogger<YouTubeDownloadService> _logger;
         private readonly IServiceProvider _services;
+        private readonly Configuration _config;
 
-        public YouTubeDownloadService(ILoggerFactory loggerfactory, IServiceProvider services)
+        public YouTubeDownloadService(ILoggerFactory loggerfactory, IServiceProvider services, IConfiguration config)
         {
             _logger = loggerfactory.CreateLogger<YouTubeDownloadService>();
             _services = services;
+            _config = config.GetSection("config").Get<Configuration>();
         }
 
         protected async override Task ExecuteAsync(CancellationToken stoppingToken)
@@ -44,6 +47,8 @@ namespace MusicThingy.Services
                             .Cast<YouTubeSourceMedia>())
                         {
                             _logger.LogInformation($"Getting metadata for {media.YouTubeId}");
+
+                            var channel = await _client.GetVideoAuthorChannelAsync(media.YouTubeId);
                             var info = await _client.GetVideoMediaStreamInfosAsync(media.YouTubeId);
                             var audioinfo = info.Audio
                                 .OrderBy(x => x.Size)
@@ -52,14 +57,17 @@ namespace MusicThingy.Services
 
                             if (audioinfo == null)
                             {
-                                _logger.LogInformation($"Video {media.YouTubeTitle} has no suitable music :(");
+                                _logger.LogInformation($"Video {media.YouTubeId} has no suitable music data 😢");
                                 continue;
                             }
-                            media.FilePath = Path.Combine(media.YouTubeUploader.GetSafeFilename(), $"[{media.YouTubeId}] {media.YouTubeTitle.GetSafeFilename()}.m4a");
+                            media.FilePath = Path.Combine("YouTube", channel.Id, $"{media.YouTubeId}.m4a")
+                                .GetSafePath();
 
-                            _logger.LogInformation($"Downloading file {media.FilePath}");
-                            Directory.CreateDirectory(Path.GetDirectoryName(Path.Combine("data", media.FilePath)));
-                            await _client.DownloadMediaStreamAsync(audioinfo, Path.Combine("data", media.FilePath));
+                            var downloadpath = Path.Combine(_config.DataStoragePath, media.FilePath).GetSafePath();
+
+                            _logger.LogInformation($"Downloading file {downloadpath}");
+                            Directory.CreateDirectory(Path.GetDirectoryName(downloadpath));
+                            await _client.DownloadMediaStreamAsync(audioinfo, downloadpath);
                             media.IsDownloaded = true;
                             await _repository.SaveChanges();
 
