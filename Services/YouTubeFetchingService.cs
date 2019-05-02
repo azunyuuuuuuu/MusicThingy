@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
@@ -16,20 +16,20 @@ using YoutubeExplode;
 
 namespace MusicThingy.Services
 {
-    public class YouTubeService : BackgroundService
+    public class YouTubeFetchingService : BackgroundService
     {
-        private readonly ILogger<YouTubeService> _logger;
+        private readonly ILogger<YouTubeFetchingService> _logger;
         private readonly IServiceProvider _services;
 
-        public YouTubeService(ILoggerFactory loggerfactory, IServiceProvider services)
+        public YouTubeFetchingService(ILoggerFactory loggerfactory, IServiceProvider services)
         {
-            _logger = loggerfactory.CreateLogger<YouTubeService>();
+            _logger = loggerfactory.CreateLogger<YouTubeFetchingService>();
             _services = services;
         }
 
         protected async override Task ExecuteAsync(CancellationToken stoppingToken)
         {
-            _logger.LogInformation($"{nameof(YouTubeService)} started");
+            _logger.LogInformation($"{nameof(YouTubeFetchingService)} started");
 
             while (!stoppingToken.IsCancellationRequested)
             {
@@ -79,7 +79,7 @@ namespace MusicThingy.Services
                 await Task.Delay(TimeSpan.FromMinutes(1), stoppingToken);
             }
 
-            _logger.LogInformation($"{nameof(YouTubeService)} stopped");
+            _logger.LogInformation($"{nameof(YouTubeFetchingService)} stopped");
         }
     }
 }
