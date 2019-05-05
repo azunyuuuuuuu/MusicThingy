@@ -1,7 +1,6 @@
-using System;
 using System.IO;
 
-namespace MusicThingy
+namespace MusicThingy.Helpers
 {
     public static class ExtensionMethods
     {
@@ -9,7 +8,7 @@ namespace MusicThingy
         {
             return string.Join("_", filename.Split(Path.GetInvalidFileNameChars()));
         }
-        
+
         public static string GetSafePath(this string filename)
         {
             return string.Join("_", filename.Split(Path.GetInvalidPathChars()));
