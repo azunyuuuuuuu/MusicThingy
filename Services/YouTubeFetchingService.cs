@@ -58,7 +58,8 @@ namespace MusicThingy.Services
                                 Name = x.Title,
                                 Artist = x.Author,
                                 Time = x.Duration,
-                                Album = source.Title
+                                Album = source.Title,
+                                Description = x.Description,
                             });
 
                             foreach (var video in videos)

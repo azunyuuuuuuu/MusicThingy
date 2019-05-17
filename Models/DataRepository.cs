@@ -33,6 +33,14 @@ namespace MusicThingy.Models
             return await _context.Media.ToListAsync();
         }
 
+        internal async Task<List<Media>> GetAllDownloadedMedia()
+        {
+            return await _context.Media
+                .AsNoTracking()
+                .Where(x => x.IsDownloaded == true)
+                .ToListAsync();
+        }
+
         public IEnumerable<Media> GetAllMediaWriteable(Func<Media, bool> predicate)
         {
             return _context.Media

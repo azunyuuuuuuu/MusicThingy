@@ -41,6 +41,7 @@ namespace MusicThingy
 
             services.AddHostedService<YouTubeFetchingService>();
             services.AddHostedService<YouTubeDownloadService>();
+            services.AddHostedService<TagUpdateService>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
