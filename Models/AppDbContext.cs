@@ -1,12 +1,21 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using System.IO;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Configuration;
 
 namespace MusicThingy.Models
 {
     public class AppDbContext : DbContext
     {
+        private readonly string databasepath;
+
+        public AppDbContext(IConfiguration config)
+        {
+            databasepath = Path.Combine(config.GetSection("config").Get<Configuration>().DataPath, "database.sqlite");
+        }
+
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
-            optionsBuilder.UseSqlite("Data Source=appdata.db");
+            optionsBuilder.UseSqlite($"Data Source={databasepath}");
         }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)

@@ -44,7 +44,7 @@ namespace MusicThingy.Services
 
                         foreach (var media in _repository
                             .GetAllMediaWriteable(x => x.IsDownloaded == false && x.IsActive == true)
-                            .Take(5)
+                            .Take(1)
                             .Cast<YouTubeSourceMedia>())
                         {
                             _logger.LogInformation($"Getting metadata for {media.YouTubeId}");
@@ -64,7 +64,7 @@ namespace MusicThingy.Services
                             media.FilePath = Path.Combine("YouTube", channel.Id, $"{media.YouTubeId}.m4a")
                                 .GetSafePath();
 
-                            var downloadpath = Path.Combine(_config.DataStoragePath, media.FilePath).GetSafePath();
+                            var downloadpath = Path.Combine(_config.SourcesPath, media.FilePath).GetSafePath();
 
                             _logger.LogInformation($"Downloading file {downloadpath}");
                             Directory.CreateDirectory(Path.GetDirectoryName(downloadpath));
