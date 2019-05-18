@@ -94,7 +94,7 @@ namespace MusicThingy.Services
                     _logger.LogError(ex, "An error occurred while downloading media");
                 }
 
-                await Task.Delay(TimeSpan.FromSeconds(3), stoppingToken);
+                await Task.Delay(TimeSpan.FromMilliseconds(100), stoppingToken);
             }
 
             _logger.LogInformation($"{nameof(YouTubeDownloadService)} stopped");
