@@ -1,0 +1,28 @@
+
+@inherits ManageSyncTargetsBase
+@using System.Linq
+
+<table class="ui selectable table">
+    <thead>
+        <tr>
+            <th>Name</th>
+            <th>Path</th>
+            <th>Actions</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach(var item in SyncTargets){
+            <tr>
+                <td>@item.Name</td>
+                <td>@item.Path</td>
+                <td class="collapsing"><button class="ui button red" onclick="@(e=>RemoveSyncTarget(item))">Remove</button></td>
+            </tr>
+        }
+    </tbody>
+</table>
+
+<div class="ui action input">
+    <input type="text" placeholder="Name" bind="@NewSyncTarget.Name" />
+    <input type="text" placeholder="Path" bind="@NewSyncTarget.Path" />
+    <div class="ui button" onclick="@AddNewSyncTarget">Add</div>
+</div>

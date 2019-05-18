@@ -1,3 +1,4 @@
+
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -98,6 +99,42 @@ namespace MusicThingy.Models
                 .FirstOrDefaultAsync(x =>
                     x.SourceId == sourcemedia.SourceId &&
                     x.MediaId == sourcemedia.MediaId);
+        }
+
+        public async Task<List<SyncTarget>> GetSyncTargets()
+        {
+            return await _context.SyncTargets
+                .AsNoTracking()
+                .ToListAsync();
+        }
+
+        public async Task<SyncTarget> GetSyncTarget(int id)
+        {
+            return await _context.SyncTargets
+                .AsNoTracking()
+                .SingleAsync(x => x.Id == id);
+        }
+
+        public async Task AddSyncTarget(SyncTarget synctarget)
+        {
+            await _context.SyncTargets
+                .AddAsync(synctarget);
+            await _context.SaveChangesAsync();
+            _context.Entry(synctarget).State = EntityState.Detached;
+        }
+
+        public async Task UpdateSyncTarget(SyncTarget synctarget)
+        {
+            _context.SyncTargets.Update(synctarget);
+            await _context.SaveChangesAsync();
+            _context.Entry(synctarget).State = EntityState.Detached;
+        }
+
+        public async Task RemoveSyncTarget(SyncTarget synctarget)
+        {
+            _context.SyncTargets.Remove(synctarget);
+            await _context.SaveChangesAsync();
+            _context.Entry(synctarget).State = EntityState.Detached;
         }
     }
 }

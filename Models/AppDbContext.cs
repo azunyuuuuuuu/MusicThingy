@@ -28,5 +28,13 @@ namespace MusicThingy.Models
 
         public DbSet<Source> Sources { get; set; }
         public DbSet<Media> Media { get; set; }
+        public DbSet<SyncTarget> SyncTargets { get; set; }
+    }
+
+    public class SyncTarget
+    {
+        public int Id { get; set; }
+        public string Name { get; set; }
+        public string Path { get; set; }
     }
 }

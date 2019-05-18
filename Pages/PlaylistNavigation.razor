@@ -24,9 +24,12 @@
         </div>
 
         <div class="item">
-            <div class="header">Devices</div>
+            <div class="header">Sync targets</div>
             <div class="menu">
-                <a href="" class="item">Phone</a>
+                @foreach (var item in SyncTargets)
+                {
+                    <a href="" class="item">@item.Name</a>
+                }
             </div>
         </div>
 
@@ -44,10 +47,13 @@
 @functions
 {
     List<Source> Sources { get; set; } = new List<Source>();
+    List<SyncTarget> SyncTargets { get; set; } = new List<SyncTarget>();
 
     protected override async Task OnInitAsync()
     {
         Sources.AddRange((await _repository.GetAllSources())
             .OrderBy(x => x.Title));
+        SyncTargets.AddRange((await _repository.GetSyncTargets())
+            .OrderBy(x => x.Name));
     }
 }
