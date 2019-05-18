@@ -16,6 +16,7 @@ namespace MusicThingy.Models
         public bool IsActive { get; set; } = true;
         public bool IsDownloaded { get; set; } = false;
         public string FilePath { get; set; } = string.Empty;
+        public string ArtworkPath { get; set; } = string.Empty;
 
         public ICollection<SourceMedia> SourceMedia { get; set; } = new List<SourceMedia>();
     }
@@ -26,7 +27,7 @@ namespace MusicThingy.Models
         public string YouTubeTitle { get; set; }
         public string YouTubeUploader { get; set; }
         public string YouTubeDescription { get; set; }
-        // public List<string> Keywords { get; set; }
+        public string YouTubeThumbnailFile { get; set; }
         public TimeSpan YouTubeDuration { get; set; }
         public DateTimeOffset YouTubeUploadDate { get; set; }
     }

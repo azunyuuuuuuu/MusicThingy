@@ -37,6 +37,7 @@ namespace MusicThingy
             services.AddDbContext<AppDbContext>();
             services.AddScoped<DataRepository>();
 
+            services.AddHttpClient();
             services.AddScoped<YoutubeClient>();
 
             services.AddHostedService<YouTubeFetchingService>();
