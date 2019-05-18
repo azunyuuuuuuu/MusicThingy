@@ -1,5 +1,6 @@
 using System;
 using System.IO;
+using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using Microsoft.Extensions.Configuration;
@@ -41,25 +42,36 @@ namespace MusicThingy.Services
                         foreach (var media in await _repository.GetAllDownloadedMedia())
                         {
                             var mediapath = Path.Combine(_config.SourcesPath, media.FilePath).GetSafePath();
+                            var artworkpath = Path.Combine(_config.SourcesPath, media.ArtworkPath).GetSafePath();
 
                             using (var stream = File.Open(mediapath, FileMode.Open))
                             {
                                 var tagfile = TagLib.File.Create(new TagLib.StreamFileAbstraction(stream.Name, stream, stream));
 
                                 if (
-                                    media.Name == tagfile.Tag.Title &&
-                                    media.Artist == tagfile.Tag.FirstPerformer &&
-                                    media.Description == tagfile.Tag.Comment
+                                    media.Name != tagfile.Tag.Title ||
+                                    media.Artist != tagfile.Tag.FirstPerformer ||
+                                    media.Description != tagfile.Tag.Comment
                                 )
-                                    continue;
+                                {
+                                    _logger.LogInformation($"Updating metadata for file {mediapath}");
 
-                                _logger.LogInformation($"Updating metadata for file {mediapath}");
+                                    tagfile.Tag.Title = media.Name;
+                                    tagfile.Tag.Performers = new[] { media.Artist };
+                                    // tagfile.Tag.AlbumArtists = new[] { media.YouTubeUploader };
+                                    tagfile.Tag.Comment = media.Description;
+                                    tagfile.Save();
+                                }
 
-                                tagfile.Tag.Title = media.Name;
-                                tagfile.Tag.Performers = new[] { media.Artist };
-                                // tagfile.Tag.AlbumArtists = new[] { media.YouTubeUploader };
-                                tagfile.Tag.Comment = media.Description;
-                                tagfile.Save();
+                                if (tagfile.Tag.Pictures.Count() == 0 && File.Exists(artworkpath))
+                                {
+                                    _logger.LogInformation($"Updating thumbnail for file {mediapath}");
+                                    using (var imagestream = File.OpenRead(artworkpath))
+                                        tagfile.Tag.Pictures = new TagLib.IPicture[] {
+                                            new TagLib.Picture(new TagLib.StreamFileAbstraction(imagestream.Name, imagestream, imagestream))
+                                        };
+                                    tagfile.Save();
+                                }
                             }
                         }
                     }

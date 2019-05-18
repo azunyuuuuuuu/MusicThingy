@@ -52,7 +52,7 @@ namespace MusicThingy.Services
 
                         foreach (var media in _repository
                             .GetAllMediaWriteable(x => x.IsDownloaded == false && x.IsActive == true)
-                            .Take(1)
+                            // .Take(25)
                             .Cast<YouTubeSourceMedia>())
                         {
                             _logger.LogInformation($"Getting metadata for {media.YouTubeId}");
@@ -81,6 +81,7 @@ namespace MusicThingy.Services
                             _logger.LogInformation($"Downloading file {downloadpath}");
                             Directory.CreateDirectory(Path.GetDirectoryName(downloadpath));
                             await _client.DownloadMediaStreamAsync(audioinfo, downloadpath);
+
                             await File.WriteAllBytesAsync(artworkpath, await GetThumbnail(httpclient, mediainfo));
                             media.IsDownloaded = true;
                             await _repository.SaveChanges();
@@ -94,7 +95,7 @@ namespace MusicThingy.Services
                     _logger.LogError(ex, "An error occurred while downloading media");
                 }
 
-                await Task.Delay(TimeSpan.FromMilliseconds(100), stoppingToken);
+                await Task.Delay(TimeSpan.FromMinutes(1), stoppingToken);
             }
 
             _logger.LogInformation($"{nameof(YouTubeDownloadService)} stopped");
