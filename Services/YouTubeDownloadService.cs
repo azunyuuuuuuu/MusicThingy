@@ -48,7 +48,7 @@ namespace MusicThingy.Services
                     using (var httpclient = _httpclientfactory.CreateClient())
                     {
                         var _repository = scope.ServiceProvider.GetRequiredService<DataRepository>();
-                        var _client = scope.ServiceProvider.GetRequiredService<YoutubeClient>();
+                        var _ytclient = scope.ServiceProvider.GetRequiredService<YoutubeClient>();
 
                         foreach (var media in _repository
                             .GetAllMediaWriteable(x => x.IsDownloaded == false && x.IsActive == true)
