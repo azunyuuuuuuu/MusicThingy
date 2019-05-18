@@ -24,6 +24,13 @@ namespace MusicThingy.Models
                 .AsNoTracking()
                 .ToListAsync();
 
+        public async Task<List<Source>> GetAllSourcesWithMedia()
+            => await _context.Sources
+                .AsNoTracking()
+                .Include(x => x.SourceMedias)
+                .ThenInclude(x => x.Media)
+                .ToListAsync();
+
         public async Task<Source> GetSource(string id)
             => await _context.Sources
                 .AsNoTracking()

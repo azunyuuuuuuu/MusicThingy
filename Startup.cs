@@ -39,6 +39,8 @@ namespace MusicThingy
 
             services.AddHttpClient();
             services.AddScoped<YoutubeClient>();
+            
+            services.AddScoped<SyncService>();
 
             services.AddHostedService<YouTubeFetchingService>();
             services.AddHostedService<YouTubeDownloadService>();

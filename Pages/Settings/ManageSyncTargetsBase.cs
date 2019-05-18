@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Components;
 using Microsoft.EntityFrameworkCore;
 using MusicThingy.Models;
+using MusicThingy.Services;
 using YoutubeExplode;
 
 namespace MusicThingy.Pages
@@ -12,6 +13,7 @@ namespace MusicThingy.Pages
     public class ManageSyncTargetsBase : ComponentBase
     {
         [Inject] protected DataRepository _repository { get; set; }
+        [Inject] protected SyncService _syncservice { get; set; }
 
         public List<SyncTarget> SyncTargets { get; private set; } = new List<SyncTarget>();
 
@@ -35,6 +37,11 @@ namespace MusicThingy.Pages
         public async Task RemoveSyncTarget(SyncTarget synctarget)
         {
             await _repository.RemoveSyncTarget(synctarget);
+        }
+
+        public async Task SyncAll()
+        {
+            await _syncservice.SyncAll();
         }
     }
 }

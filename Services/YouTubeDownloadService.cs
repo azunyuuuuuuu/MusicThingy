@@ -70,9 +70,9 @@ namespace MusicThingy.Services
                                 _logger.LogInformation($"Video {media.YouTubeId} has no suitable music data 😢");
                                 continue;
                             }
-                            media.FilePath = Path.Combine("YouTube", channel.Id, $"{media.YouTubeId}.m4a")
+                            media.FilePath = Path.Combine(media.GetType().Name, channel.Id, $"{media.YouTubeId}.m4a")
                                 .GetSafePath();
-                            media.ArtworkPath = Path.Combine("YouTube", channel.Id, $"{media.YouTubeId}.jpg")
+                            media.ArtworkPath = Path.Combine(media.GetType().Name, channel.Id, $"{media.YouTubeId}.jpg")
                                 .GetSafePath();
 
                             var downloadpath = Path.Combine(_config.SourcesPath, media.FilePath).GetSafePath();
