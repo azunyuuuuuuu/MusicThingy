@@ -29,19 +29,28 @@ namespace MusicThingy.Pages
             if (string.IsNullOrWhiteSpace(NewSyncTarget.Name)) return;
             if (string.IsNullOrWhiteSpace(NewSyncTarget.Path)) return;
 
-            await _repository.AddSyncTarget(NewSyncTarget);
+            try
+            {
+                await _repository.AddSyncTarget(NewSyncTarget);
 
-            NewSyncTarget = new SyncTarget();
+                NewSyncTarget = new SyncTarget();
+            }
+            catch (Exception) { }
         }
 
         public async Task RemoveSyncTarget(SyncTarget synctarget)
         {
-            await _repository.RemoveSyncTarget(synctarget);
+            try { await _repository.RemoveSyncTarget(synctarget); } catch (Exception) { }
         }
 
         public async Task SyncAll()
         {
-            await _syncservice.SyncAll();
+            try { await _syncservice.SyncAll(); } catch (Exception) { }
+        }
+
+        public async Task Sync(SyncTarget synctarget)
+        {
+            try { await _syncservice.Sync(synctarget); } catch (Exception) { }
         }
     }
 }

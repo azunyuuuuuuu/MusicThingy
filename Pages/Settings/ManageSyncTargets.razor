@@ -18,7 +18,7 @@
                 <td>@item.Name</td>
                 <td>@item.Path</td>
                 <td class="collapsing">
-                    <button class="ui button green">Sync</button>
+                    <button class="ui button green" onclick="@(e=>Sync(item))">Sync</button>
                     <button class="ui button red" onclick="@(e=>RemoveSyncTarget(item))">Remove</button>
                 </td>
             </tr>

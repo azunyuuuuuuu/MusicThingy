@@ -31,38 +31,43 @@ namespace MusicThingy.Services
             foreach (var target in await _repository.GetSyncTargets())
             {
                 // copy files
-                _logger.LogInformation($"Syncing target {target.Name}...");
-
-                var media = (await _repository.GetAllMedia()).Where(x => x.IsActive && x.IsDownloaded);
-
-                foreach (var item in media)
-                {
-                    var sourcepath = Path.Combine(_config.DataPath, "sources", item.FilePath).GetSafePath();
-                    var targetpath = Path.Combine(target.Path, item.GetType().Name, item.Artist.GetSafeFilename(), $"{item.Name}.m4a".GetSafeFilename()).GetSafePath();
-
-                    Directory.CreateDirectory(Path.GetDirectoryName(targetpath));
-
-                    _logger.LogInformation($"Copying {sourcepath} to {targetpath}...");
-                    using (var sourcestream = File.OpenRead(sourcepath))
-                    using (var targetstream = File.OpenWrite(targetpath))
-                        await sourcestream.CopyToAsync(targetstream);
-                }
-
-                // create playlists
-                _logger.LogInformation($"Creating playlists for {target.Name}...");
-                var sources = await _repository.GetAllSourcesWithMedia();
-
-                foreach (var source in sources)
-                {
-                    _logger.LogInformation($"Creating playlist {source.Title}");
-                    var output = source.SourceMedias
-                        .Select(x => x.Media)
-                        .Where(x => x.IsActive && x.IsDownloaded)
-                        .Select(x => Path.Combine(target.Path, x.GetType().Name, x.Artist, $"{x.Name}.m4a".GetSafeFilename()).GetSafePath());
-                    await File.WriteAllLinesAsync(Path.Combine(target.Path, $"Source - {source.Title}.m3u"), output);
-                }
+                await Sync(target);
             }
             _logger.LogInformation("Sync complete");
+        }
+
+        public async Task Sync(SyncTarget synctarget)
+        {
+            _logger.LogInformation($"Syncing target {synctarget.Name}...");
+
+            var media = (await _repository.GetAllMedia()).Where(x => x.IsActive && x.IsDownloaded);
+
+            foreach (var item in media)
+            {
+                var sourcepath = Path.Combine(_config.DataPath, "sources", item.FilePath).GetSafePath();
+                var targetpath = Path.Combine(synctarget.Path, item.GetType().Name, item.Artist.GetSafeFilename(), $"{item.Name}.m4a".GetSafeFilename()).GetSafePath();
+
+                Directory.CreateDirectory(Path.GetDirectoryName(targetpath));
+
+                _logger.LogInformation($"Copying {sourcepath} to {targetpath}...");
+                using (var sourcestream = File.OpenRead(sourcepath))
+                using (var targetstream = File.OpenWrite(targetpath))
+                    await sourcestream.CopyToAsync(targetstream);
+            }
+
+            // create playlists
+            _logger.LogInformation($"Creating playlists for {synctarget.Name}...");
+            var sources = await _repository.GetAllSourcesWithMedia();
+
+            foreach (var source in sources)
+            {
+                _logger.LogInformation($"Creating playlist {source.Title}");
+                var output = source.SourceMedias
+                    .Select(x => x.Media)
+                    .Where(x => x.IsActive && x.IsDownloaded)
+                    .Select(x => Path.Combine(x.GetType().Name, x.Artist, $"{x.Name}.m4a".GetSafeFilename()).GetSafePath());
+                await File.WriteAllLinesAsync(Path.Combine(synctarget.Path, $"🎵 {source.Title}.m3u"), output);
+            }
         }
     }
 }
