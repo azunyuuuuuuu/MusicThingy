@@ -52,42 +52,9 @@ namespace MusicThingy.Services
 
                         foreach (var media in _repository
                             .GetAllMediaWriteable(x => x.IsDownloaded == false && x.IsActive == true)
-                            // .Take(25)
                             .Cast<YouTubeSourceMedia>())
-                        {
-                            _logger.LogInformation($"Getting metadata for {media.YouTubeId}");
-
-                            var mediainfo = await _client.GetVideoAsync(media.YouTubeId);
-                            var channel = await _client.GetVideoAuthorChannelAsync(media.YouTubeId);
-                            var info = await _client.GetVideoMediaStreamInfosAsync(media.YouTubeId);
-                            var audioinfo = info.Audio
-                                .OrderBy(x => x.Size)
-                                .Where(x => x.AudioEncoding == AudioEncoding.Aac)
-                                .FirstOrDefault();
-
-                            if (audioinfo == null)
-                            {
-                                _logger.LogInformation($"Video {media.YouTubeId} has no suitable music data 😢");
-                                continue;
-                            }
-                            media.FilePath = Path.Combine(media.GetType().Name, channel.Id, $"{media.YouTubeId}.m4a")
-                                .GetSafePath();
-                            media.ArtworkPath = Path.Combine(media.GetType().Name, channel.Id, $"{media.YouTubeId}.jpg")
-                                .GetSafePath();
-
-                            var downloadpath = Path.Combine(_config.SourcesPath, media.FilePath).GetSafePath();
-                            var artworkpath = Path.Combine(_config.SourcesPath, media.ArtworkPath).GetSafePath();
-
-                            _logger.LogInformation($"Downloading file {downloadpath}");
-                            Directory.CreateDirectory(Path.GetDirectoryName(downloadpath));
-                            await _client.DownloadMediaStreamAsync(audioinfo, downloadpath);
-
-                            await File.WriteAllBytesAsync(artworkpath, await GetThumbnail(httpclient, mediainfo));
-                            media.IsDownloaded = true;
-                            await _repository.SaveChanges();
-
-                            _logger.LogInformation($"Download for {media.YouTubeId} completed");
-                        }
+                            try { await DownloadMusicFile(httpclient, _repository, _ytclient, media); }
+                            catch (Exception ex) { _logger.LogError(ex, $"An error occurred while downloading {media.YouTubeId}"); }
                     }
                 }
                 catch (Exception ex)
@@ -99,6 +66,49 @@ namespace MusicThingy.Services
             }
 
             _logger.LogInformation($"{nameof(YouTubeDownloadService)} stopped");
+        }
+
+        private async Task DownloadMusicFile(HttpClient httpclient, DataRepository _repository, YoutubeClient _ytclient, YouTubeSourceMedia media)
+        {
+            _logger.LogInformation($"Getting metadata for {media.YouTubeId}");
+
+            var mediainfo = await _ytclient.GetVideoAsync(media.YouTubeId);
+            var channel = await _ytclient.GetVideoAuthorChannelAsync(media.YouTubeId);
+            MediaStreamInfoSet info = null;
+            try
+            {
+                info = await _ytclient.GetVideoMediaStreamInfosAsync(media.YouTubeId);
+            }
+            catch (YoutubeExplode.Exceptions.VideoUnplayableException ex)
+            {
+                _logger.LogError(ex, $"Unable to download {media.YouTubeId}");
+                media.IsActive = false;
+                await _repository.SaveChanges();
+                return;
+            }
+
+            var audioinfo = info.Audio
+                .OrderBy(x => x.Size)
+                .Where(x => x.AudioEncoding == AudioEncoding.Aac)
+                .FirstOrDefault();
+
+            media.FilePath = Path.Combine(media.GetType().Name, channel.Id, $"{media.YouTubeId}.m4a")
+                .GetSafePath();
+            media.ArtworkPath = Path.Combine(media.GetType().Name, channel.Id, $"{media.YouTubeId}.jpg")
+                .GetSafePath();
+
+            var downloadfilepath = Path.Combine(_config.SourcesPath, media.FilePath).GetSafePath();
+            var downloadartworkpath = Path.Combine(_config.SourcesPath, media.ArtworkPath).GetSafePath();
+
+            _logger.LogInformation($"Downloading file {downloadfilepath}");
+            Directory.CreateDirectory(Path.GetDirectoryName(downloadfilepath));
+            await _ytclient.DownloadMediaStreamAsync(audioinfo, downloadfilepath);
+
+            await File.WriteAllBytesAsync(downloadartworkpath, await GetThumbnail(httpclient, mediainfo));
+            media.IsDownloaded = true;
+            await _repository.SaveChanges();
+
+            _logger.LogInformation($"Download for {media.YouTubeId} completed");
         }
 
         private static async Task<byte[]> GetThumbnail(HttpClient httpclient, YoutubeExplode.Models.Video mediainfo)
