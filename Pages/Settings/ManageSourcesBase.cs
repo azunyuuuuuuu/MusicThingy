@@ -32,35 +32,42 @@ namespace MusicThingy.Pages
 
         public async Task AddSource()
         {
-            if (string.IsNullOrWhiteSpace(NewSourceUrl))
-                return;
-
-            var playlistid = YoutubeClient.ParsePlaylistId(NewSourceUrl);
-
-            var playlist = await _ytclient.GetPlaylistAsync(playlistid);
-
-            var item = new Source
+            try
             {
-                Id = $"YTPl#{playlistid}",
-                PlaylistId = playlistid,
-                Title = playlist.Title,
-                Author = playlist.Author,
-                Description = playlist.Description,
-            };
+                if (string.IsNullOrWhiteSpace(NewSourceUrl))
+                    return;
 
-            NewSourceUrl = string.Empty;
+                var playlistid = YoutubeClient.ParsePlaylistId(NewSourceUrl);
 
-            await _repository.AddSource(item);
-            await RebuildList();
+                var playlist = await _ytclient.GetPlaylistAsync(playlistid);
 
-            IsAdd = false;
+                var item = new Source
+                {
+                    Id = $"YTPl#{playlistid}",
+                    PlaylistId = playlistid,
+                    Title = playlist.Title,
+                    Author = playlist.Author,
+                    Description = playlist.Description,
+                };
 
-            StateHasChanged();
+                NewSourceUrl = string.Empty;
+
+                await _repository.AddSource(item);
+            }
+            catch (Exception) { }
+            finally
+            {
+                await RebuildList();
+
+                IsAdd = false;
+
+                StateHasChanged();
+            }
         }
 
         public async Task RemoveSource(Source source)
         {
-            await _repository.RemoveSource(source);
+            try { await _repository.RemoveSource(source); } catch (Exception) { }
             await RebuildList();
         }
 
