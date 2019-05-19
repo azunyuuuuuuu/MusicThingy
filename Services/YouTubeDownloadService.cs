@@ -52,7 +52,7 @@ namespace MusicThingy.Services
 
                         foreach (var media in _repository
                             .GetAllMediaWriteable(x => x.IsDownloaded == false && x.IsActive == true)
-                            .Cast<YouTubeSourceMedia>())
+                            .OfType<YouTubeSourceMedia>())
                             try { await DownloadMusicFile(httpclient, _repository, _ytclient, media); }
                             catch (Exception ex) { _logger.LogError(ex, $"An error occurred while downloading {media.YouTubeId}"); }
                     }
