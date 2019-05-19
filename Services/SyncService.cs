@@ -65,8 +65,8 @@ namespace MusicThingy.Services
                 var output = source.SourceMedias
                     .Select(x => x.Media)
                     .Where(x => x.IsActive && x.IsDownloaded)
-                    .Select(x => Path.Combine(x.GetType().Name, x.Artist, $"{x.Name}.m4a".GetSafeFilename()).GetSafePath());
-                await File.WriteAllLinesAsync(Path.Combine(synctarget.Path, $"🎵 {source.Title}.m3u"), output);
+                    .Select(x => Path.Combine(x.GetType().Name, x.Artist.GetSafeFilename(), $"{x.Name}.m4a".GetSafeFilename()).GetSafePath());
+                await File.WriteAllLinesAsync(Path.Combine(synctarget.Path, $"Source - {source.Title}.m3u"), output);
             }
         }
     }
