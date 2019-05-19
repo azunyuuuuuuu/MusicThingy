@@ -49,6 +49,9 @@ namespace MusicThingy.Services
 
                 Directory.CreateDirectory(Path.GetDirectoryName(targetpath));
 
+                if (File.Exists(targetpath) && item.TimeChanged < File.GetLastWriteTimeUtc(targetpath))
+                    continue;
+
                 _logger.LogInformation($"Copying {sourcepath} to {targetpath}...");
                 using (var sourcestream = File.OpenRead(sourcepath))
                 using (var targetstream = File.OpenWrite(targetpath))
