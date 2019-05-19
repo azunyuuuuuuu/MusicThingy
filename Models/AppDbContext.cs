@@ -15,7 +15,8 @@ namespace MusicThingy.Models
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
-            optionsBuilder.UseSqlite($"Data Source={databasepath}");
+            optionsBuilder.UseSqlite($"Data Source={databasepath}",
+                provideroptions => provideroptions.CommandTimeout(10));
         }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
