@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 namespace MusicThingy.Models
 {
-    public class Source
+    public class Source : ModelBase
     {
         public string Id { get; set; }
         public string Title { get; set; }

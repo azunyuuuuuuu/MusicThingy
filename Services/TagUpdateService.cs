@@ -47,12 +47,8 @@ namespace MusicThingy.Services
                             using (var stream = File.Open(mediapath, FileMode.Open))
                             {
                                 var tagfile = TagLib.File.Create(new TagLib.StreamFileAbstraction(stream.Name, stream, stream));
-
-                                if (
-                                    media.Name != tagfile.Tag.Title ||
-                                    media.Artist != tagfile.Tag.FirstPerformer ||
-                                    media.Description != tagfile.Tag.Comment
-                                )
+                                var filetime = File.GetLastWriteTimeUtc(mediapath);
+                                if (media.TimeChanged > filetime)
                                 {
                                     _logger.LogInformation($"Updating metadata for file {mediapath}");
 

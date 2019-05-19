@@ -16,16 +16,20 @@ namespace MusicThingy.Models
         public DataRepository(ILoggerFactory loggerfactory, AppDbContext context)
         {
             _context = context;
+            _context.ChangeTracker.QueryTrackingBehavior = QueryTrackingBehavior.NoTracking;
+
             _logger = loggerfactory.CreateLogger<DataRepository>();
         }
 
-        public async Task SaveChanges(int tries = 3)
+        private async Task SaveChanges(int tries = 3)
         {
             if (tries == 0)
                 return;
 
             try
             {
+                foreach (var item in _context.ChangeTracker.Entries().OfType<ModelBase>())
+                    item.TimeChanged = DateTimeOffset.Now;
                 await _context.SaveChangesAsync();
             }
             catch (Exception ex)
@@ -38,30 +42,27 @@ namespace MusicThingy.Models
 
         public async Task<List<Source>> GetAllSources()
             => await _context.Sources
-                .AsNoTracking()
                 .ToListAsync();
 
         public async Task<List<Source>> GetAllSourcesWithMedia()
             => await _context.Sources
-                .AsNoTracking()
                 .Include(x => x.SourceMedias)
                 .ThenInclude(x => x.Media)
                 .ToListAsync();
 
         public async Task<Source> GetSource(string id)
             => await _context.Sources
-                .AsNoTracking()
                 .SingleAsync(x => x.Id == id);
 
         internal async Task<List<Media>> GetAllMedia()
         {
-            return await _context.Media.ToListAsync();
+            return await _context.Media
+                .ToListAsync();
         }
 
         internal async Task<List<Media>> GetAllDownloadedMedia()
         {
             return await _context.Media
-                .AsNoTracking()
                 .Where(x => x.IsDownloaded == true)
                 .ToListAsync();
         }
@@ -74,7 +75,6 @@ namespace MusicThingy.Models
 
         public async Task<Source> GetSourceWithMedia(string id)
             => await _context.Sources
-                .AsNoTracking()
                 .Include(x => x.SourceMedias)
                 .ThenInclude(x => x.Media)
                 .SingleAsync(x => x.Id == id);
@@ -97,7 +97,6 @@ namespace MusicThingy.Models
         public async Task<bool> ContainsMedia(Media video)
         {
             return await _context.Media
-                .AsNoTracking()
                 .ContainsAsync(video);
         }
 
@@ -107,6 +106,14 @@ namespace MusicThingy.Models
                 .AddAsync(video);
             await SaveChanges();
             _context.Entry(video).State = EntityState.Detached;
+        }
+
+        public async Task UpdateMedia(Media media)
+        {
+            media.TimeChanged = DateTimeOffset.Now;
+            _context.Media
+                .Update(media);
+            await SaveChanges();
         }
 
         public async Task AddSourceMedia(SourceMedia sourcemedia)
@@ -128,14 +135,12 @@ namespace MusicThingy.Models
         public async Task<List<SyncTarget>> GetSyncTargets()
         {
             return await _context.SyncTargets
-                .AsNoTracking()
                 .ToListAsync();
         }
 
         public async Task<SyncTarget> GetSyncTarget(int id)
         {
             return await _context.SyncTargets
-                .AsNoTracking()
                 .SingleAsync(x => x.Id == id);
         }
 
@@ -143,21 +148,21 @@ namespace MusicThingy.Models
         {
             await _context.SyncTargets
                 .AddAsync(synctarget);
-            await _context.SaveChangesAsync();
+            await SaveChanges();
             _context.Entry(synctarget).State = EntityState.Detached;
         }
 
         public async Task UpdateSyncTarget(SyncTarget synctarget)
         {
             _context.SyncTargets.Update(synctarget);
-            await _context.SaveChangesAsync();
+            await SaveChanges();
             _context.Entry(synctarget).State = EntityState.Detached;
         }
 
         public async Task RemoveSyncTarget(SyncTarget synctarget)
         {
             _context.SyncTargets.Remove(synctarget);
-            await _context.SaveChangesAsync();
+            await SaveChanges();
             _context.Entry(synctarget).State = EntityState.Detached;
         }
     }

@@ -83,7 +83,7 @@ namespace MusicThingy.Services
             {
                 _logger.LogError(ex, $"Unable to download {media.YouTubeId}");
                 media.IsActive = false;
-                await _repository.SaveChanges();
+                await _repository.UpdateMedia(media);
                 return;
             }
 
@@ -106,7 +106,7 @@ namespace MusicThingy.Services
 
             await File.WriteAllBytesAsync(downloadartworkpath, await GetThumbnail(httpclient, mediainfo));
             media.IsDownloaded = true;
-            await _repository.SaveChanges();
+            await _repository.UpdateMedia(media);
 
             _logger.LogInformation($"Download for {media.YouTubeId} completed");
         }
