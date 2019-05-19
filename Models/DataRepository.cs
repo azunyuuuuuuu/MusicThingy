@@ -4,20 +4,37 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Logging;
 
 namespace MusicThingy.Models
 {
     public class DataRepository
     {
         private readonly AppDbContext _context;
+        private readonly ILogger<DataRepository> _logger;
 
-        public DataRepository(AppDbContext context)
+        public DataRepository(ILoggerFactory loggerfactory, AppDbContext context)
         {
             _context = context;
+            _logger = loggerfactory.CreateLogger<DataRepository>();
         }
 
-        public async Task SaveChanges()
-            => await _context.SaveChangesAsync();
+        public async Task SaveChanges(int tries = 3)
+        {
+            if (tries == 0)
+                return;
+
+            try
+            {
+                await _context.SaveChangesAsync();
+            }
+            catch (Exception ex)
+            {
+                tries--;
+                _logger.LogError(ex, $"Could not save right now, retry {tries} more times");
+                await SaveChanges(tries);
+            }
+        }
 
         public async Task<List<Source>> GetAllSources()
             => await _context.Sources
