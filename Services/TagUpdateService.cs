@@ -44,6 +44,16 @@ namespace MusicThingy.Services
                             var mediapath = Path.Combine(_config.SourcesPath, media.FilePath).GetSafePath();
                             var artworkpath = Path.Combine(_config.SourcesPath, media.ArtworkPath).GetSafePath();
 
+                            if (!File.Exists(mediapath))
+                            {
+                                _logger.LogInformation($"File {mediapath} does not exist anymore, deactivating.");
+                                
+                                media.IsDownloaded = false;
+                                media.IsActive = false;
+                                await _repository.UpdateMedia(media);
+                                continue;
+                            }
+
                             using (var stream = File.Open(mediapath, FileMode.Open))
                             {
                                 var tagfile = TagLib.File.Create(new TagLib.StreamFileAbstraction(stream.Name, stream, stream));
