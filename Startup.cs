@@ -4,6 +4,7 @@ using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 using ElectronNET.API;
+using EFCore.DbContextFactory.Extensions;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
@@ -35,12 +36,14 @@ namespace MusicThingy
             services.AddRazorPages();
             services.AddServerSideBlazor();
 
-            services.AddDbContext<AppDbContext>();
+            // services.AddDbContext<AppDbContext>();
+            services.AddDbContextFactory<AppDbContext>(builder => builder
+                .UseSqlite("Data Source=" + Path.Combine(_config.DataPath, "library.sqlite")));
             services.AddScoped<DataRepository>();
 
             services.AddHttpClient();
             services.AddScoped<YoutubeClient>();
-            
+
             services.AddScoped<SyncService>();
 
             services.AddHostedService<YouTubeFetchingService>();
@@ -54,9 +57,11 @@ namespace MusicThingy
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
+                app.UseDatabaseErrorPage();
             }
             else
             {
+                app.UseExceptionHandler("/Home/Error");
                 // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
                 app.UseHsts();
             }

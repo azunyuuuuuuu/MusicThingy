@@ -6,18 +6,19 @@ namespace MusicThingy.Models
 {
     public class AppDbContext : DbContext
     {
-        private readonly string databasepath;
+        // private readonly string databasepath;
 
-        public AppDbContext(IConfiguration config)
+        public AppDbContext(DbContextOptions options)
+            : base(options)
         {
-            databasepath = Path.Combine(config.GetSection("config").Get<Configuration>().DataPath, "database.sqlite");
+            // databasepath = Path.Combine(config.GetSection("config").Get<Configuration>().DataPath, "database.sqlite");
         }
 
-        protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
-        {
-            optionsBuilder.UseSqlite($"Data Source={databasepath}",
-                provideroptions => provideroptions.CommandTimeout(10));
-        }
+        // protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
+        // {
+        //     optionsBuilder.UseSqlite($"Data Source={databasepath}",
+        //         provideroptions => provideroptions.CommandTimeout(10));
+        // }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {

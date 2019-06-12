@@ -10,6 +10,7 @@
     <PackageReference Include="ElectronNET.API" Version="5.22.12" />
     <PackageReference Include="TagLib.Portable" Version="1.2.0-pre" />
     <PackageReference Include="YoutubeExplode" Version="4.7.1" />
+    <PackageReference Include="EFCore.DbContextFactory" Version="1.0.2" />
   </ItemGroup>
   <ItemGroup>
     <Content Update="electron.manifest.json">
