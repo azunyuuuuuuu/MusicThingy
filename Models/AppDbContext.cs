@@ -8,7 +8,7 @@ namespace MusicThingy.Models
     {
         // private readonly string databasepath;
 
-        public AppDbContext(DbContextOptions options)
+        public AppDbContext(DbContextOptions<AppDbContext> options)
             : base(options)
         {
             // databasepath = Path.Combine(config.GetSection("config").Get<Configuration>().DataPath, "database.sqlite");
