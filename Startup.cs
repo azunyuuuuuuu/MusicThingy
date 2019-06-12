@@ -37,7 +37,7 @@ namespace MusicThingy
 
             // services.AddDbContext<AppDbContext>();
             services.AddDbContextFactory<AppDbContext>(builder => builder
-                .UseSqlite("Data Source=" + Path.Combine(_config.DataPath, "database.sqlite")));
+                .UseSqlite("Data Source=" + Path.Combine(_config.DataPath, "library.sqlite")));
             services.AddScoped<DataRepository>();
 
             services.AddHttpClient();

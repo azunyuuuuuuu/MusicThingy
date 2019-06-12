@@ -19,23 +19,10 @@ namespace MusicThingy.Models
             _logger = loggerfactory.CreateLogger<DataRepository>();
         }
 
-        private async Task SaveChanges()
-        {
-            using (var _context = _factory())
-            {
-                foreach (var item in _context.ChangeTracker.Entries().OfType<ModelBase>())
-                    item.TimeChanged = DateTimeOffset.Now;
-                await _context.SaveChangesAsync();
-            }
-        }
-
         public async Task<List<Source>> GetAllSources()
         {
             using (var _context = _factory())
-            {
-                return await _context.Sources
-                  .ToListAsync();
-            }
+                return await _context.Sources.ToListAsync();
         }
 
         public async Task<List<Source>> GetAllSourcesWithMedia()
@@ -52,10 +39,9 @@ namespace MusicThingy.Models
         public async Task<Source> GetSource(string id)
         {
             using (var _context = _factory())
-            {
                 return await _context.Sources
                   .SingleAsync(x => x.Id == id);
-            }
+
         }
 
         internal async Task<List<Media>> GetAllMedia()
@@ -94,8 +80,7 @@ namespace MusicThingy.Models
             {
                 await _context.Sources
                     .AddAsync(source);
-                await SaveChanges();
-                _context.Entry(source).State = EntityState.Detached;
+                await _context.SaveChangesAsync();
             }
         }
 
@@ -105,7 +90,7 @@ namespace MusicThingy.Models
             {
                 _context.Sources
                    .Remove(source);
-                await SaveChanges();
+                await _context.SaveChangesAsync();
             }
         }
 
@@ -124,7 +109,7 @@ namespace MusicThingy.Models
             {
                 await _context.Media
                     .AddAsync(video);
-                await SaveChanges();
+                await _context.SaveChangesAsync();
                 _context.Entry(video).State = EntityState.Detached;
             }
         }
@@ -136,7 +121,7 @@ namespace MusicThingy.Models
                 media.TimeChanged = DateTimeOffset.Now;
                 _context.Media
                     .Update(media);
-                await SaveChanges();
+                await _context.SaveChangesAsync();
             }
         }
 
@@ -146,8 +131,7 @@ namespace MusicThingy.Models
             {
                 await _context.Set<SourceMedia>()
                     .AddAsync(sourcemedia);
-                await SaveChanges();
-                _context.Entry(sourcemedia).State = EntityState.Detached;
+                await _context.SaveChangesAsync();
             }
         }
 
@@ -186,8 +170,7 @@ namespace MusicThingy.Models
             {
                 await _context.SyncTargets
                     .AddAsync(synctarget);
-                await SaveChanges();
-                _context.Entry(synctarget).State = EntityState.Detached;
+                await _context.SaveChangesAsync();
             }
         }
 
@@ -196,8 +179,7 @@ namespace MusicThingy.Models
             using (var _context = _factory())
             {
                 _context.SyncTargets.Update(synctarget);
-                await SaveChanges();
-                _context.Entry(synctarget).State = EntityState.Detached;
+                await _context.SaveChangesAsync();
             }
         }
 
@@ -206,8 +188,7 @@ namespace MusicThingy.Models
             using (var _context = _factory())
             {
                 _context.SyncTargets.Remove(synctarget);
-                await SaveChanges();
-                _context.Entry(synctarget).State = EntityState.Detached;
+                await _context.SaveChangesAsync();
             }
         }
     }

@@ -9,7 +9,7 @@ using YoutubeExplode;
 
 namespace MusicThingy.Pages
 {
-    public class IndexBase : ComponentBase
+    public class IndexBase : ComponentBase, IDisposable
     {
         [Inject] protected DataRepository _repository { get; set; }
 
@@ -19,6 +19,11 @@ namespace MusicThingy.Pages
         {
             Videos.AddRange((await _repository.GetAllMedia())
                 .OrderBy(x => x.Name));
+        }
+
+        public void Dispose()
+        {
+            Videos.Clear();
         }
     }
 }
