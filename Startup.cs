@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
+using EFCore.DbContextFactory.Extensions;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
@@ -34,12 +35,14 @@ namespace MusicThingy
             services.AddRazorPages();
             services.AddServerSideBlazor();
 
-            services.AddDbContext<AppDbContext>();
+            // services.AddDbContext<AppDbContext>();
+            services.AddDbContextFactory<AppDbContext>(builder => builder
+                .UseSqlite("Data Source=" + Path.Combine(_config.DataPath, "database.sqlite")));
             services.AddScoped<DataRepository>();
 
             services.AddHttpClient();
             services.AddScoped<YoutubeClient>();
-            
+
             services.AddScoped<SyncService>();
 
             services.AddHostedService<YouTubeFetchingService>();

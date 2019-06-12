@@ -31,7 +31,8 @@ namespace MusicThingy
                 var services = scope.ServiceProvider;
                 try
                 {
-                    var context = services.GetRequiredService<AppDbContext>();
+                    var factory = services.GetRequiredService<Func<AppDbContext>>();
+                    var context = factory();
                     context.Database.EnsureCreated();
                 }
                 catch (Exception ex)

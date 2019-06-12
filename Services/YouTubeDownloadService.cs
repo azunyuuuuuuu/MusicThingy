@@ -50,9 +50,10 @@ namespace MusicThingy.Services
                         var _repository = scope.ServiceProvider.GetRequiredService<DataRepository>();
                         var _ytclient = scope.ServiceProvider.GetRequiredService<YoutubeClient>();
 
-                        foreach (var media in _repository
-                            .GetAllMediaWriteable(x => x.IsDownloaded == false && x.IsActive == true)
-                            .OfType<YouTubeSourceMedia>())
+                        foreach (var media in (await _repository
+                            .GetAllMedia())
+                            .OfType<YouTubeSourceMedia>()
+                            .Where(x => x.IsDownloaded == false && x.IsActive == true))
                             try { await DownloadMusicFile(httpclient, _repository, _ytclient, media); }
                             catch (Exception ex) { _logger.LogError(ex, $"An error occurred while downloading {media.YouTubeId}"); }
                     }
