@@ -1,5 +1,8 @@
 ﻿@inherits LayoutComponentBase
 
+@using ElectronNET.API
+@using ElectronNET.API.Entities
+
 @Body
 
 <footer>
@@ -17,6 +20,14 @@
     <div id="view" class="ui icon buttons">
         <NavLink class="ui button" href="" Match="NavLinkMatch.All"><i class="list icon"></i></NavLink>
         <div class="ui disabled button"><i class="download icon"></i></div>
-        <NavLink class="ui button" href="settings" Match="NavLinkMatch.All"><i class="cog icon"></i></NavLink>
+        <a @onclick="@OpenSettings" class="ui button"><i class="cog icon"></i></a>
+        <!-- <NavLink class="ui button" href="settings" Match="NavLinkMatch.All"><i class="cog icon"></i></NavLink> -->
     </div>
 </footer>
+
+@code {
+    async Task OpenSettings()
+    {
+        await Electron.WindowManager.CreateWindowAsync(new BrowserWindowOptions { Modal = true }, $"http://localhost:{BridgeSettings.WebPort}/settings");
+    }
+}

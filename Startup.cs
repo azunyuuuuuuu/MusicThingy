@@ -17,6 +17,7 @@ using Microsoft.Extensions.Hosting;
 using MusicThingy.Models;
 using MusicThingy.Services;
 using YoutubeExplode;
+using ElectronNET.API.Entities;
 
 namespace MusicThingy
 {
@@ -52,7 +53,7 @@ namespace MusicThingy
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-        public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
+        public async void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
             if (env.IsDevelopment())
             {
@@ -85,7 +86,7 @@ namespace MusicThingy
                 endpoints.MapFallbackToPage("/_Host");
             });
 
-            Electron.WindowManager.CreateWindowAsync();
+            var browserWindow = await Electron.WindowManager.CreateWindowAsync(new BrowserWindowOptions { });
         }
     }
 }
