@@ -69,6 +69,7 @@ namespace MusicThingy.Pages
         {
             try { await _repository.RemoveSource(source); } catch (Exception) { }
             await RebuildList();
+            StateHasChanged();
         }
 
         public void OpenModal()
