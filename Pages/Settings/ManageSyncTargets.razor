@@ -27,7 +27,7 @@
 </table>
 
 <div class="ui action input">
-    <input type="text" placeholder="Name" bind="@NewSyncTarget.Name" />
-    <input type="text" placeholder="Path" bind="@NewSyncTarget.Path" />
+    <input type="text" placeholder="Name" @bind="@NewSyncTarget.Name" />
+    <input type="text" placeholder="Path" @bind="@NewSyncTarget.Path" />
     <div class="ui button" @onclick="@AddNewSyncTarget">Add</div>
 </div>
