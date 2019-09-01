@@ -49,7 +49,7 @@
     List<Source> Sources { get; set; } = new List<Source>();
     List<SyncTarget> SyncTargets { get; set; } = new List<SyncTarget>();
 
-    protected override async Task OnInitAsync()
+    protected override async Task OnInitializedAsync()
     {
         Sources.AddRange((await _repository.GetAllSources())
             .OrderBy(x => x.Title));

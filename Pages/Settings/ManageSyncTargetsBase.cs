@@ -19,7 +19,7 @@ namespace MusicThingy.Pages
 
         public SyncTarget NewSyncTarget { get; private set; } = new SyncTarget();
 
-        protected override async Task OnInitAsync()
+        protected override async Task OnInitializedAsync()
         {
             SyncTargets = await _repository.GetSyncTargets();
         }

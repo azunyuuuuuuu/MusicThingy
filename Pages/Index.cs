@@ -15,7 +15,7 @@ namespace MusicThingy.Pages
 
         public List<Media> Videos { get; set; } = new List<Media>();
 
-        protected override async Task OnInitAsync()
+        protected override async Task OnInitializedAsync()
         {
             Videos.AddRange((await _repository.GetAllMedia())
                 .OrderBy(x => x.Name));

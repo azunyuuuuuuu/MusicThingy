@@ -19,7 +19,7 @@ namespace MusicThingy.Pages
 
         public bool IsAdd { get; set; } = false;
 
-        protected override async Task OnInitAsync()
+        protected override async Task OnInitializedAsync()
         {
             await RebuildList();
         }
