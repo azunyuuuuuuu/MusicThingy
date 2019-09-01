@@ -2,7 +2,7 @@
 @inherits ManageSyncTargetsBase
 @using System.Linq
 
-<button class="ui button green" onclick="@SyncAll">Sync All</button>
+<button class="ui button green" @onclick="@SyncAll">Sync All</button>
 
 <table class="ui selectable table">
     <thead>
@@ -18,8 +18,8 @@
                 <td>@item.Name</td>
                 <td>@item.Path</td>
                 <td class="collapsing">
-                    <button class="ui button green" onclick="@(e=>Sync(item))">Sync</button>
-                    <button class="ui button red" onclick="@(e=>RemoveSyncTarget(item))">Remove</button>
+                    <button class="ui button green" @onclick="@(e=>Sync(item))">Sync</button>
+                    <button class="ui button red" @onclick="@(e=>RemoveSyncTarget(item))">Remove</button>
                 </td>
             </tr>
         }
@@ -29,5 +29,5 @@
 <div class="ui action input">
     <input type="text" placeholder="Name" bind="@NewSyncTarget.Name" />
     <input type="text" placeholder="Path" bind="@NewSyncTarget.Path" />
-    <div class="ui button" onclick="@AddNewSyncTarget">Add</div>
+    <div class="ui button" @onclick="@AddNewSyncTarget">Add</div>
 </div>
