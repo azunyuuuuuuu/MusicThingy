@@ -10,7 +10,7 @@
     <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="3.0.0-preview5.19227.1" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.Sqlite" Version="3.0.0-preview5.19227.1" />
     <PackageReference Include="TagLib.Portable" Version="1.2.0-pre" />
-    <PackageReference Include="YoutubeExplode" Version="4.7.6" />
+    <PackageReference Include="YoutubeExplode" Version="4.7.9" />
     <PackageReference Include="EFCore.DbContextFactory" Version="1.0.2" />
   </ItemGroup>
 
