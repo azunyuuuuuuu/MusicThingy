@@ -11,6 +11,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
+using MusicThingy.Helpers;
 using MusicThingy.Models;
 using YoutubeExplode;
 
@@ -56,7 +57,7 @@ namespace MusicThingy.Services
                                 YouTubeDuration = x.Duration,
                                 YouTubeUploadDate = x.UploadDate,
                                 Name = x.Title,
-                                Artist = x.Author,
+                                Artist = x.Author.RegexReplace(" - Topic$", string.Empty),
                                 Time = x.Duration,
                                 // Album = source.Title,
                                 Description = x.Description,
@@ -66,7 +67,11 @@ namespace MusicThingy.Services
                                 if (!await _repository.ContainsMedia(video))
                                     await _repository.AddMedia(video);
 
-                            foreach (var item in videos.Select(video => new SourceMedia { SourceId = source.Id, MediaId = video.Id }))
+                            foreach (var item in videos.Select(video => new SourceMedia
+                            {
+                                SourceId = source.Id,
+                                MediaId = video.Id
+                            }))
                                 if (!await _repository.ContainsSourceMedia(item))
                                     await _repository.AddSourceMedia(item);
                         }
