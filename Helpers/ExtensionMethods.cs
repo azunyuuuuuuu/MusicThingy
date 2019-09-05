@@ -20,7 +20,7 @@ namespace MusicThingy.Helpers
         {
             return string.Join("_", filename.Split(Path.GetInvalidPathChars()));
         }
-        
+
         public static string RegexReplace(this string input, string pattern, string replacement)
         {
             if (input == null)

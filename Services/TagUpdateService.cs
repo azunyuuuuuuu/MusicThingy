@@ -47,7 +47,7 @@ namespace MusicThingy.Services
                             if (!File.Exists(mediapath))
                             {
                                 _logger.LogInformation($"File {mediapath} does not exist anymore, deactivating.");
-                                
+
                                 media.IsDownloaded = false;
                                 media.IsActive = false;
                                 await _repository.UpdateMedia(media);
