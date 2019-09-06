@@ -10,9 +10,9 @@
             "request": "launch",
             "preLaunchTask": "build",
             // If you have changed target frameworks, make sure to update the program path.
-            "program": "${workspaceFolder}/bin/Debug/netcoreapp3.0/MusicThingy.dll",
+            "program": "${workspaceFolder}/src/MusicThingy.Server/bin/Debug/netcoreapp3.0/MusicThingy.Server.dll",
             "args": [],
-            "cwd": "${workspaceFolder}",
+            "cwd": "${workspaceFolder}/src/MusicThingy.Server",
             "stopAtEntry": false,
             "console": "integratedTerminal",
             "internalConsoleOptions": "neverOpen",

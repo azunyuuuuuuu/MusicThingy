@@ -7,7 +7,7 @@
             "type": "process",
             "args": [
                 "build",
-                "${workspaceFolder}/MusicThingy.csproj"
+                "${workspaceFolder}/src/MusicThingy.Server/MusicThingy.Server.csproj"
             ],
             "problemMatcher": "$tsc"
         },
@@ -17,7 +17,7 @@
             "type": "process",
             "args": [
                 "publish",
-                "${workspaceFolder}/MusicThingy.csproj"
+                "${workspaceFolder}/src/MusicThingy.Server/MusicThingy.Server.csproj"
             ],
             "problemMatcher": "$tsc"
         },
@@ -28,7 +28,7 @@
             "args": [
                 "watch",
                 "run",
-                "${workspaceFolder}/MusicThingy.csproj"
+                "${workspaceFolder}/src/MusicThingy.Server/MusicThingy.Server.csproj"
             ],
             "problemMatcher": "$tsc"
         }
