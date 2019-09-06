@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace MusicThingy.Models
+namespace MusicThingy.Server.Models
 {
     public class SourceMedia
     {

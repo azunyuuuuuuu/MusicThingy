@@ -11,11 +11,11 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
-using MusicThingy.Helpers;
-using MusicThingy.Models;
+using MusicThingy.Server.Helpers;
+using MusicThingy.Server.Models;
 using YoutubeExplode;
 
-namespace MusicThingy.Services
+namespace MusicThingy.Server.Services
 {
     public class YouTubeFetchingService : BackgroundService
     {

@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 
-namespace MusicThingy.Models
+namespace MusicThingy.Server.Models
 {
     public class DataRepository
     {

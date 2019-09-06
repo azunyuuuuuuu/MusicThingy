@@ -2,7 +2,7 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 
-namespace MusicThingy.Models
+namespace MusicThingy.Server.Models
 {
     public class AppDbContext : DbContext
     {

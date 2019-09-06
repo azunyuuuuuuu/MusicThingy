@@ -8,12 +8,12 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
-using MusicThingy.Helpers;
-using MusicThingy.Models;
+using MusicThingy.Server.Helpers;
+using MusicThingy.Server.Models;
 using YoutubeExplode;
 using YoutubeExplode.Models.MediaStreams;
 
-namespace MusicThingy.Services
+namespace MusicThingy.Server.Services
 {
     public class YouTubeDownloadService : BackgroundService
     {

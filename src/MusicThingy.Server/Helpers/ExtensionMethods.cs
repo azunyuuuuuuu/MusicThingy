@@ -2,7 +2,7 @@ using System;
 using System.IO;
 using System.Text.RegularExpressions;
 
-namespace MusicThingy.Helpers
+namespace MusicThingy.Server.Helpers
 {
     public static class ExtensionMethods
     {

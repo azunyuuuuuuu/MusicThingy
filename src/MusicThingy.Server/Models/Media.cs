@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace MusicThingy.Models
+namespace MusicThingy.Server.Models
 {
     public abstract class Media : ModelBase
     {
