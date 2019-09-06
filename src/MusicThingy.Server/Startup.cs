@@ -13,11 +13,11 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.FileProviders;
 using Microsoft.Extensions.Hosting;
-using MusicThingy.Models;
-using MusicThingy.Services;
+using MusicThingy.Server.Models;
+using MusicThingy.Server.Services;
 using YoutubeExplode;
 
-namespace MusicThingy
+namespace MusicThingy.Server
 {
     public class Startup
     {

@@ -1,6 +1,6 @@
 using System.IO;
 
-namespace MusicThingy.Models
+namespace MusicThingy.Server.Models
 {
     public class Configuration
     {

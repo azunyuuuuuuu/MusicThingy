@@ -4,10 +4,10 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Components;
 using Microsoft.EntityFrameworkCore;
-using MusicThingy.Models;
+using MusicThingy.Server.Models;
 using YoutubeExplode;
 
-namespace MusicThingy.Pages
+namespace MusicThingy.Server.Pages
 {
     public class IndexBase : ComponentBase, IDisposable
     {
