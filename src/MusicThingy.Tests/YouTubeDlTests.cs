@@ -26,14 +26,14 @@ namespace MusicThingy.Tests
             Assert.Pass();
         }
 
-        [TestCase(@"https://www.youtube.com/watch?v=BaW_jenozKc&t=1s&end=9", @"youtube-dl test video ""'/\ä↭𝕐")]
+        [TestCase(@"https://www.youtube.com/playlist?list=PLzH6n4zXuckpfMu_4Ff8E7Z1behQks5ba", @"youtube-dl test video ""'/\ä↭𝕐")]
         public void Fetch_MetaData_YoutubePlaylist(string url, string title)
         {
             Assert.Pass();
         }
 
         [TestCase(@"https://www.youtube.com/watch?v=BaW_jenozKc&t=1s&end=9", YtdlExtractorKeys.Youtube)]
-        [TestCase(@"https://www.youtube.com/playlist?list=PLwP_SiAcdui0KVebT0mU9Apz359a4ubsC", YtdlExtractorKeys.YoutubePlaylist)]
+        [TestCase(@"https://www.youtube.com/playlist?list=PLzH6n4zXuckpfMu_4Ff8E7Z1behQks5ba", YtdlExtractorKeys.YoutubePlaylist)]
         public async Task Check_ExtractorKey_Correct(string url, YtdlExtractorKeys extractorkey)
         {
             Assert.That(await _ytdl.GetMediaType(url), Is.EqualTo(extractorkey));
