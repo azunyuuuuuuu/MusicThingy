@@ -25,5 +25,12 @@ namespace MusicThingy.Tests
         {
             Assert.Pass();
         }
+
+        [TestCase(@"https://www.youtube.com/watch?v=BaW_jenozKc&t=1s&end=9", YtdlExtractorKeys.Youtube)]
+        [TestCase(@"https://www.youtube.com/playlist?list=PLwP_SiAcdui0KVebT0mU9Apz359a4ubsC", YtdlExtractorKeys.YoutubePlaylist)]
+        public async Task Check_ExtractorKeysForUrlAsync(string url, YtdlExtractorKeys extractorkey)
+        {
+            Assert.That(await _ytdl.GetMediaType(url), Is.EqualTo(extractorkey));
+        }
     }
 }
