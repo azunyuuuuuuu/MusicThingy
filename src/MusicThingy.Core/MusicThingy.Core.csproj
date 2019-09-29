@@ -4,6 +4,10 @@
     <ProjectReference Include="..\MusicThingy.DataModels\MusicThingy.DataModels.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <PackageReference Include="CliWrap" Version="2.3.1" />
+  </ItemGroup>
+
   <PropertyGroup>
     <TargetFramework>netstandard2.0</TargetFramework>
   </PropertyGroup>
