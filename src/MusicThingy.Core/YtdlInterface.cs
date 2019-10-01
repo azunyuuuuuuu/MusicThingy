@@ -22,10 +22,8 @@ namespace MusicThingy.Core
         }
 
 
-        public async Task<string> GetExtractorKey(string url)
-        {
-            return await GetExtractorKey(new Uri(url));
-        }
+        public Task<string> GetExtractorKey(string url)
+            => GetExtractorKey(new Uri(url));
 
         public async Task<string> GetExtractorKey(Uri uri)
         {
@@ -41,7 +39,10 @@ namespace MusicThingy.Core
             return document.RootElement.GetProperty("extractor_key").GetString();
         }
 
-        public async IAsyncEnumerable<Track> GetTracksFromPlaylist(Uri uri)
+        public Task<IEnumerable<Track>> GetTracksFromPlaylist(string url)
+            => GetTracksFromPlaylist(new Uri(url));
+
+        public async Task<IEnumerable<Track>> GetTracksFromPlaylist(Uri uri)
         {
             var result = await Cli.Wrap(_ytdl)
                 .SetArguments(new[]{
@@ -55,8 +56,7 @@ namespace MusicThingy.Core
             if (playlist.ExtractorKey != "YoutubePlaylist")
                 throw new NotSupportedException($"ExtractorKey {playlist.ExtractorKey} not supported.");
 
-
-            var tracks = playlist.Entries
+            return playlist.Entries
                 .Where(x => x.Track != null)
                 .Select(x => new Track
                 {
@@ -66,8 +66,6 @@ namespace MusicThingy.Core
                     Comment = x.Description
                 });
 
-            foreach (var track in tracks)
-                yield return track;
         }
     }
 }

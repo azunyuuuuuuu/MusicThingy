@@ -1,4 +1,5 @@
-﻿using System.Threading.Tasks;
+﻿using System.Linq;
+using System.Threading.Tasks;
 using MusicThingy.Core;
 using Xunit;
 
@@ -39,6 +40,15 @@ namespace MusicThingy.Tests
         public async Task Check_ExtractorKey_Correct(string url, string extractorkey)
         {
             Assert.Equal(await _ytdl.GetExtractorKey(url), extractorkey);
+        }
+
+        [Theory]
+        [InlineData(@"https://www.youtube.com/playlist?list=PLzH6n4zXuckpfMu_4Ff8E7Z1behQks5ba", 0)]
+        [InlineData(@"https://www.youtube.com/playlist?list=PL163R8GmMIKXOs6VjW2k1bFryfttqwHWr", 17)]
+        public async Task Fetch_Tracks_FromYoutubePlaylist(string url, int expectedcount)
+        {
+            var tracks = await _ytdl.GetTracksFromPlaylist(url);
+            Assert.Equal(expectedcount, tracks.Count());
         }
     }
 }
