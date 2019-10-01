@@ -2,6 +2,9 @@
 using System.Threading.Tasks;
 using System.Text.Json;
 using CliWrap;
+using System.Collections.Generic;
+using MusicThingy.DataModels;
+using System.Linq;
 
 namespace MusicThingy.Core
 {
@@ -19,12 +22,12 @@ namespace MusicThingy.Core
         }
 
 
-        public async Task<YtdlExtractorKeys> GetMediaType(string url)
+        public async Task<string> GetExtractorKey(string url)
         {
-            return await GetMediaType(new Uri(url));
+            return await GetExtractorKey(new Uri(url));
         }
 
-        public async Task<YtdlExtractorKeys> GetMediaType(Uri uri)
+        public async Task<string> GetExtractorKey(Uri uri)
         {
             var result = await Cli.Wrap(_ytdl)
                 .SetArguments(new[]{
@@ -35,15 +38,36 @@ namespace MusicThingy.Core
 
             var document = JsonDocument.Parse(result.StandardOutput);
 
-            var extractorkey = document.RootElement.GetProperty("extractor_key").GetString();
-
-            return (YtdlExtractorKeys)Enum.Parse(typeof(YtdlExtractorKeys), extractorkey);
+            return document.RootElement.GetProperty("extractor_key").GetString();
         }
-    }
 
-    public enum YtdlExtractorKeys
-    {
-        Youtube,
-        YoutubePlaylist
+        public async IAsyncEnumerable<Track> GetTracksFromPlaylist(Uri uri)
+        {
+            var result = await Cli.Wrap(_ytdl)
+                .SetArguments(new[]{
+                    "-i",
+                    "--dump-single-json",
+                    uri.ToString()})
+                .ExecuteAsync();
+
+            var playlist = JsonSerializer.Deserialize<DataModels.Ytdl.Playlist>(result.StandardOutput);
+
+            if (playlist.ExtractorKey != "YoutubePlaylist")
+                throw new NotSupportedException($"ExtractorKey {playlist.ExtractorKey} not supported.");
+
+
+            var tracks = playlist.Entries
+                .Where(x => x.Track != null)
+                .Select(x => new Track
+                {
+                    Title = x.Track,
+                    Artist = x.Creator,
+                    Album = x.Album,
+                    Comment = x.Description
+                });
+
+            foreach (var track in tracks)
+                yield return track;
+        }
     }
 }

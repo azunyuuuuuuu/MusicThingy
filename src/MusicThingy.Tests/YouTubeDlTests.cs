@@ -34,11 +34,11 @@ namespace MusicThingy.Tests
         }
 
         [Theory]
-        [InlineData(@"https://www.youtube.com/watch?v=BaW_jenozKc&t=1s&end=9", YtdlExtractorKeys.Youtube)]
-        [InlineData(@"https://www.youtube.com/playlist?list=PLzH6n4zXuckpfMu_4Ff8E7Z1behQks5ba", YtdlExtractorKeys.YoutubePlaylist)]
-        public async Task Check_ExtractorKey_Correct(string url, YtdlExtractorKeys extractorkey)
+        [InlineData(@"https://www.youtube.com/watch?v=BaW_jenozKc&t=1s&end=9", @"Youtube")]
+        [InlineData(@"https://www.youtube.com/playlist?list=PLzH6n4zXuckpfMu_4Ff8E7Z1behQks5ba", @"YoutubePlaylist")]
+        public async Task Check_ExtractorKey_Correct(string url, string extractorkey)
         {
-            Assert.Equal(await _ytdl.GetMediaType(url), extractorkey);
+            Assert.Equal(await _ytdl.GetExtractorKey(url), extractorkey);
         }
     }
 }
