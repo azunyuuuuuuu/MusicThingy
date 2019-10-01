@@ -5,11 +5,11 @@ using Xunit;
 
 namespace MusicThingy.Tests
 {
-    public class YouTubeDlTests
+    public class Ytdl
     {
         private YtdlInterface _ytdl;
 
-        public YouTubeDlTests()
+        public Ytdl()
         {
             _ytdl = new YtdlInterface();
         }
