@@ -44,7 +44,7 @@ namespace MusicThingy.Tests
 
         [Theory]
         [InlineData(@"https://www.youtube.com/playlist?list=PLzH6n4zXuckpfMu_4Ff8E7Z1behQks5ba", 0)]
-        [InlineData(@"https://www.youtube.com/playlist?list=PL163R8GmMIKXOs6VjW2k1bFryfttqwHWr", 17)]
+        [InlineData(@"https://www.youtube.com/playlist?list=PL163R8GmMIKXOs6VjW2k1bFryfttqwHWr", 6)]
         public async Task Fetch_Tracks_FromYoutubePlaylist(string url, int expectedcount)
         {
             var tracks = await _ytdl.GetTracksFromPlaylist(url);
