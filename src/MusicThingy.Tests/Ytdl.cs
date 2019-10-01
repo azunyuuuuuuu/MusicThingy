@@ -1,4 +1,6 @@
-﻿using System.Linq;
+﻿using System;
+using System.IO;
+using System.Linq;
 using System.Threading.Tasks;
 using MusicThingy.Core;
 using Xunit;
@@ -49,6 +51,17 @@ namespace MusicThingy.Tests
         {
             var tracks = await _ytdl.GetTracksFromPlaylist(url);
             Assert.Equal(expectedcount, tracks.Count());
+        }
+
+        [Theory]
+        [InlineData(@"https://www.youtube.com/watch?v=kPUBMCJMKDg")]
+        public async Task Download_Track_FromYouTube(string url)
+        {
+            var testfilepath = $"{Guid.NewGuid()}.m4a";
+
+            await _ytdl.DownloadTrack(url, testfilepath);
+            Assert.True(File.Exists(testfilepath));
+            File.Delete(testfilepath);
         }
     }
 }

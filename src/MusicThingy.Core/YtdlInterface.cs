@@ -21,7 +21,6 @@ namespace MusicThingy.Core
             return result.StandardOutput;
         }
 
-
         public Task<string> GetExtractorKey(string url)
             => GetExtractorKey(new Uri(url));
 
@@ -65,7 +64,20 @@ namespace MusicThingy.Core
                     Album = x.Album,
                     Comment = x.Description
                 });
+        }
 
+        public Task DownloadTrack(string url, string path)
+            => DownloadTrack(new Uri(url), path);
+
+        public async Task DownloadTrack(Uri uri, string path)
+        {
+            var result = await Cli.Wrap(_ytdl)
+                .SetArguments(new[]{
+                    "--extract-audio",
+                    "--audio-format", "m4a",
+                    "--output", path,
+                    uri.ToString()})
+                .ExecuteAsync();
         }
     }
 }
