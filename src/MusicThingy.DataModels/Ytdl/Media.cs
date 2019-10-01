@@ -4,11 +4,8 @@ using System.Text.Json.Serialization;
 
 namespace MusicThingy.DataModels.Ytdl
 {
-    public partial class Media
+    public partial class Media : MetadataBase
     {
-        [JsonPropertyName("uploader")]
-        public string Uploader { get; set; }
-
         [JsonPropertyName("channel_url")]
         public Uri ChannelUrl { get; set; }
 
@@ -41,9 +38,6 @@ namespace MusicThingy.DataModels.Ytdl
 
         [JsonPropertyName("is_live")]
         public object IsLive { get; set; }
-
-        [JsonPropertyName("uploader_url")]
-        public Uri UploaderUrl { get; set; }
 
         [JsonPropertyName("like_count")]
         public long LikeCount { get; set; }
@@ -94,14 +88,8 @@ namespace MusicThingy.DataModels.Ytdl
         [JsonPropertyName("season_number")]
         public object SeasonNumber { get; set; }
 
-        [JsonPropertyName("extractor_key")]
-        public string ExtractorKey { get; set; }
-
         [JsonPropertyName("formats")]
         public List<Format> Formats { get; set; }
-
-        [JsonPropertyName("extractor")]
-        public string Extractor { get; set; }
 
         [JsonPropertyName("playlist_id")]
         public string PlaylistId { get; set; }
@@ -115,9 +103,6 @@ namespace MusicThingy.DataModels.Ytdl
         [JsonPropertyName("duration")]
         public long Duration { get; set; }
 
-        [JsonPropertyName("id")]
-        public string Id { get; set; }
-
         [JsonPropertyName("fps")]
         public long Fps { get; set; }
 
@@ -127,17 +112,11 @@ namespace MusicThingy.DataModels.Ytdl
         [JsonPropertyName("acodec")]
         public string Acodec { get; set; }
 
-        [JsonPropertyName("webpage_url_basename")]
-        public string WebpageUrlBasename { get; set; }
-
         [JsonPropertyName("chapters")]
         public List<Chapter> Chapters { get; set; }
 
         [JsonPropertyName("abr")]
         public long Abr { get; set; }
-
-        [JsonPropertyName("uploader_id")]
-        public string UploaderId { get; set; }
 
         [JsonPropertyName("playlist")]
         public string Playlist { get; set; }
@@ -150,9 +129,6 @@ namespace MusicThingy.DataModels.Ytdl
 
         [JsonPropertyName("license")]
         public object License { get; set; }
-
-        [JsonPropertyName("title")]
-        public string Title { get; set; }
 
         [JsonPropertyName("start_time")]
         public object StartTime { get; set; }
@@ -180,9 +156,6 @@ namespace MusicThingy.DataModels.Ytdl
 
         [JsonPropertyName("playlist_uploader_id")]
         public string PlaylistUploaderId { get; set; }
-
-        [JsonPropertyName("webpage_url")]
-        public Uri WebpageUrl { get; set; }
 
         [JsonPropertyName("track")]
         public string Track { get; set; }
