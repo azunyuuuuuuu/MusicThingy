@@ -59,9 +59,19 @@ namespace MusicThingy.Tests
         {
             var testfilepath = $"{Guid.NewGuid()}.m4a";
 
-            await _ytdl.DownloadTrack(url, testfilepath);
-            Assert.True(File.Exists(testfilepath));
-            File.Delete(testfilepath);
+            try
+            {
+                await _ytdl.DownloadTrack(url, testfilepath);
+                Assert.True(File.Exists(testfilepath));
+            }
+            catch (Exception ex)
+            {
+                Assert.True(false, ex.Message);
+            }
+            finally
+            {
+                File.Delete(testfilepath);
+            }
         }
     }
 }
